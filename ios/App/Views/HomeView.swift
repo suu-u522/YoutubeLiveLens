@@ -55,13 +55,14 @@ struct HomeView: View {
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
                             .onTapGesture { vm.tapHistory(entry) }
-                            .opacity(entry.status == .fetching ? 1.0 : 1.0)
                             .allowsHitTesting(entry.status != .fetching)
-                    }
-                    .onDelete { indexSet in
-                        indexSet.map { historyStore.entries[$0].id }.forEach {
-                            historyStore.remove(id: $0)
-                        }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button(role: .destructive) {
+                                    historyStore.remove(id: entry.id)
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                            }
                     }
                 }
                 .listStyle(.plain)
@@ -81,7 +82,7 @@ struct HomeView: View {
                 .foregroundStyle(.secondary)
             Text("右下の ＋ ボタンでYouTube URLを入力")
                 .font(.caption)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
