@@ -415,6 +415,14 @@ struct LicensesView: View {
                     LabeledContent("バージョン", value: "1.0")
                     LabeledContent("コピーライト", value: "© 2026 LiveLens")
                 }
+                Section("リンク") {
+                    Link(destination: URL(string: "https://radial-khaan-e73.notion.site/LiveLens-35cc432b82af80938561fbb43e26cbd9")!) {
+                        Label("サポート", systemImage: "questionmark.circle")
+                    }
+                    Link(destination: URL(string: "https://radial-khaan-e73.notion.site/LiveLens-35cc432b82af80cea22fc473f40f2cf7")!) {
+                        Label("プライバシーポリシー", systemImage: "lock.shield")
+                    }
+                }
                 Section("オープンソースライセンス") {
                     licenseRow(
                         name: "Firebase iOS SDK",
