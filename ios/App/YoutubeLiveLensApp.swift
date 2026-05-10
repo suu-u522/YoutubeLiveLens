@@ -32,7 +32,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         Functions.functions(region: "us-central1").useEmulator(withHost: "127.0.0.1", port: 5001)
         #endif
 
-        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        GADMobileAds.sharedInstance().start { _ in
+            Task { await RewardedAdService.shared.load() }
+        }
         FCMService.shared.setup()
         Task { await FCMService.shared.requestPermission() }
         return true

@@ -331,14 +331,24 @@ struct URLInputSheet: View {
 
     private func showAd() {
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let vc = scene.windows.first?.rootViewController else { return }
+              let window = scene.windows.first(where: { $0.isKeyWindow }),
+              let rootVC = window.rootViewController else { return }
+
+        var vc = rootVC
+        while let presented = vc.presentedViewController { vc = presented }
+
+        let adService = RewardedAdService.shared
+        guard adService.isAdReady else {
+            vm.errorMessage = "広告を準備中です。少し待ってからお試しください"
+            return
+        }
 
         let url = vm.urlText.trimmingCharacters(in: .whitespaces)
 
         // 広告表示と並行してAPI呼び出し開始
         let apiTask = Task { await vm.callAnalysisAPI(url: url) }
 
-        RewardedAdService.shared.show(from: vc) {
+        adService.show(from: vc) {
             // 報酬獲得後にAPI結果を待って履歴保存
             Task { @MainActor in
                 if let result = await apiTask.value {
