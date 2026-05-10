@@ -1,8 +1,17 @@
 # Firebase Functions 仕様書
 
+## 関数一覧
+
+| 関数名 | 種別 | タイムアウト | メモリ |
+|---|---|---|---|
+| `analyzeChat` | Callable (HTTPS) | 60秒 | 256MiB |
+| `onJobCreated` | Firestore onCreate トリガー | 1800秒 | 512MiB |
+
+---
+
 ## analyzeChat
 
-YouTube過去ライブ配信のチャットを全件取得・集計するCallable Function。
+ジョブドキュメントを作成して即座に `jobId` を返す。重い処理は `onJobCreated` に委譲。
 
 ### リクエスト
 
@@ -17,7 +26,7 @@ YouTube過去ライブ配信のチャットを全件取得・集計するCallabl
 { "jobId": "abc123" }
 ```
 
-分析中・完了済みの動画を再リクエストした場合も、既存の `jobId` を返す（後述）。
+分析中・完了済みの動画を再リクエストした場合も、既存の `jobId` を返す。
 
 ### 処理フロー
 
@@ -26,21 +35,28 @@ YouTube過去ライブ配信のチャットを全件取得・集計するCallabl
 2. videoAnalysis/{videoId} をトランザクションで確認
    - fetching / done → 既存 jobId を即返却（重複実行防止）
    - error / 未作成  → 新規ジョブを作成してロック
-3. YouTubeページHTMLから continuationトークンを取得
-4. youtubei内部APIでチャットをページネーション全件取得（0.5秒間隔）
-5. 5分バケツで集計 → timeline / top5 を生成
-6. Firestoreに結果を保存
-7. FCMプッシュ通知（fcmToken があれば）
+3. analysisJobs/{jobId} を作成（fcmToken を含む）
+4. jobId を即返却 → onJobCreated トリガーが後続処理を担う
 ```
 
-### タイムアウト・メモリ
+---
 
-| 項目 | 値 |
-|---|---|
-| タイムアウト | 1800秒（30分） |
-| メモリ | 512MB |
+## onJobCreated
 
-8時間配信の全件取得（約500〜1000ページ、0.5秒間隔）でも約10分以内に完了する想定。
+`analysisJobs/{jobId}` の作成を検知して、メタデータ取得・チャット全件取得・集計・通知を行う。
+
+### 処理フロー
+
+```
+1. YouTubeページHTMLから continuationトークンを取得
+2. YouTube Data API v3 でタイトル・配信日・配信時間を取得（並行実行）
+3. メタデータを jobドキュメントに保存（title, thumbnailUrl, publishDate, lengthSeconds）
+4. youtubei内部APIでチャットをページネーション全件取得（0.5秒間隔）
+5. 50ページごとにFirestoreへflush・進捗更新
+6. 5分バケツで集計 → timeline / top5 を生成
+7. Firestoreに最終結果を保存（status: done）
+8. FCMプッシュ通知（fcmToken があれば）
+```
 
 ---
 
@@ -64,10 +80,11 @@ YouTube過去ライブ配信のチャットを全件取得・集計するCallabl
 |---|---|---|
 | `videoId` | string | YouTube動画ID |
 | `url` | string | 元のリクエストURL |
-| `title` | string | 動画タイトル（HTMLから取得、失敗時は未セット） |
+| `fcmToken` | string | FCMデバイストークン（nullの場合あり） |
+| `title` | string | 動画タイトル（onJobCreated で更新） |
 | `thumbnailUrl` | string | サムネイルURL（`hqdefault.jpg`、videoIdから生成） |
-| `publishDate` | string | 配信日（ISO 8601形式、例: `2024-01-15`。HTMLから取得できない場合は未セット） |
-| `lengthSeconds` | number | 配信時間（秒、HTMLから取得できない場合は未セット） |
+| `publishDate` | string | 配信日（ISO 8601形式、例: `2024-01-15`） |
+| `lengthSeconds` | number | 配信時間（秒） |
 | `status` | string | `fetching` / `done` / `error` |
 | `progress` | number | 取得済みページ数（50ページごとに更新） |
 | `totalMessages` | number | 取得済みコメント数（50ページごとに更新） |
@@ -88,6 +105,16 @@ YouTube過去ライブ配信のチャットを全件取得・集計するCallabl
 }
 ```
 
+#### top5 の要素
+
+```json
+{
+  "startMs": 900000,
+  "endMs": 1200000,
+  "count": 42
+}
+```
+
 ### analysisJobs/{jobId}/comments/{bucketIndex}
 
 コメント本文をバケツ単位で保存するサブコレクション。キーワード検索・コメント一覧表示に使用。
@@ -100,17 +127,7 @@ YouTube過去ライブ配信のチャットを全件取得・集計するCallabl
 | `messages` | array | `{ text: string, offsetMs: number }` の配列 |
 
 キーワード検索はiOS側で全ドキュメントを取得してクライアントフィルタリング。
-グラフの山をタップした際は該当 `bucketIndex` のドキュメント1件だけ取得してコメント一覧を表示できる。
-
-#### top5 の要素
-
-```json
-{
-  "startMs": 900000,
-  "endMs": 1200000,
-  "count": 42
-}
-```
+グラフの山をタップした際は該当 `bucketIndex` のドキュメント1件だけ取得してコメント一覧を表示。
 
 ---
 
@@ -133,3 +150,31 @@ POST https://www.youtube.com/youtubei/v1/live_chat/get_live_chat_replay
 
 公式仕様は非公開。GCPの固定IPからの集中リクエストで429 / IPブロックのリスクあり。
 現在は0.5秒間隔で運用。ユーザー数増加時はCloud NAT + 複数IPの構成を検討。
+
+---
+
+## YouTube Data API v3
+
+動画メタデータ（タイトル・配信日・配信時間）の取得に使用。
+
+- 環境変数 `YOUTUBE_API_KEY` が必要
+- エンドポイント: `GET https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id={videoId}&key={apiKey}`
+- `publishedAt` の先頭10文字（`YYYY-MM-DD`）を `publishDate` として保存
+- `contentDetails.duration`（ISO 8601形式）を秒数に変換して `lengthSeconds` として保存
+
+---
+
+## ローカル開発
+
+```bash
+cd server
+firebase emulators:start --only functions,firestore
+```
+
+| エミュレーター | URL |
+|---|---|
+| Functions | http://127.0.0.1:5001 |
+| Firestore | http://127.0.0.1:8080 |
+| UI | http://127.0.0.1:4000 |
+
+環境変数は `functions/.env` に記載（`.gitignore` 対象）。
