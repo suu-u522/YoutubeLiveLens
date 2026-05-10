@@ -21,7 +21,6 @@ schemes:
         YoutubeLiveLens: all
     run:
       config: Debug
-      storeKitConfiguration: LiveLens.storekit
 
 targets:
   YoutubeLiveLens:

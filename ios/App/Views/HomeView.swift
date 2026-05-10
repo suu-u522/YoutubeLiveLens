@@ -321,17 +321,9 @@ struct URLInputSheet: View {
                 Button("広告を見て続ける") {
                     showAd()
                 }
-                Button("980円で無制限に解放する") {
-                    vm.showPaywall = true
-                }
                 Button("キャンセル", role: .cancel) {}
             } message: {
-                Text("広告視聴で1回、または買い切りで無制限に使えます")
-            }
-            .sheet(isPresented: $vm.showPaywall) {
-                PaywallView(url: vm.urlText) { jobId, videoId in
-                    vm.commitToHistory(jobId: jobId, url: vm.urlText, videoId: videoId)
-                }
+                Text("広告を視聴すると1回分析できます")
             }
         }
         .presentationDetents([.medium])
@@ -350,7 +342,7 @@ struct URLInputSheet: View {
             // 報酬獲得後にAPI結果を待って履歴保存
             Task { @MainActor in
                 if let result = await apiTask.value {
-                    PurchaseService.shared.grantRewardedAnalysis()
+                    vm.grantRewardedAnalysis()
                     vm.commitToHistory(jobId: result.jobId, url: url, videoId: result.videoId)
                 }
             }

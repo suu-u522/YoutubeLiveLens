@@ -7,7 +7,6 @@ final class HomeViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var showURLSheet = false
-    @Published var showPaywall = false
     @Published var showLimitAlert = false
     @Published var navigationTarget: NavigationTarget?
 
@@ -36,6 +35,31 @@ final class HomeViewModel: ObservableObject {
         set { if !newValue { navigationTarget = nil } }
     }
 
+    // MARK: - 制限ロジック
+
+    private static let freeLimit = 3
+    private static let rewardedKey = "rewardedRemaining"
+
+    var canAnalyze: Bool {
+        let done = historyStore.entries.filter { $0.status == .done }.count
+        return done < Self.freeLimit || rewardedRemaining > 0
+    }
+
+    var rewardedRemaining: Int {
+        UserDefaults.standard.integer(forKey: Self.rewardedKey)
+    }
+
+    func grantRewardedAnalysis() {
+        UserDefaults.standard.set(rewardedRemaining + 1, forKey: Self.rewardedKey)
+    }
+
+    private func consumeRewardedIfNeeded() {
+        let done = historyStore.entries.filter { $0.status == .done }.count
+        if done >= Self.freeLimit && rewardedRemaining > 0 {
+            UserDefaults.standard.set(rewardedRemaining - 1, forKey: Self.rewardedKey)
+        }
+    }
+
     let historyStore = HistoryStore.shared
     private let service = FirebaseService.shared
     private let fcm = FCMService.shared
@@ -57,7 +81,7 @@ final class HomeViewModel: ObservableObject {
             return
         }
 
-        guard PurchaseService.shared.canAnalyze else {
+        guard canAnalyze else {
             showLimitAlert = true
             return
         }
@@ -67,7 +91,7 @@ final class HomeViewModel: ObservableObject {
         }
     }
 
-    // API呼び出しのみ（広告・課金フローで広告表示と並行して実行）
+    // API呼び出しのみ（広告表示と並行して実行）
     func callAnalysisAPI(url: String) async -> (jobId: String, videoId: String)? {
         isLoading = true
         errorMessage = nil
@@ -81,14 +105,13 @@ final class HomeViewModel: ObservableObject {
         }
     }
 
-    // 履歴保存・リスナー開始（広告報酬獲得後 or 課金完了後に呼ぶ）
+    // 履歴保存・リスナー開始（広告報酬獲得後に呼ぶ）
     func commitToHistory(jobId: String, url: String, videoId: String) {
-        PurchaseService.shared.consumeRewardedIfNeeded()
+        consumeRewardedIfNeeded()
         let placeholder = AnalysisJob(id: jobId, videoId: videoId, url: url)
         historyStore.add(job: placeholder)
         startListening(jobId: jobId)
         showURLSheet = false
-        showPaywall = false
         urlText = ""
     }
 
@@ -97,7 +120,6 @@ final class HomeViewModel: ObservableObject {
     func tapHistory(_ entry: HistoryEntry) {
         switch entry.status {
         case .done:
-            // Firestoreから最新のジョブデータを取得してResultViewへ
             Task {
                 if let job = await fetchJob(jobId: entry.id) {
                     navigationTarget = .result(job: job)
