@@ -107,8 +107,13 @@ struct ResultView: View {
         let barWidth: CGFloat = 12
         let barSpacing: CGFloat = 4
         let chartWidth = CGFloat(timeline.count) * (barWidth + barSpacing) + 32
-        // X軸ラベルは1時間ごと（60 / bucketMinutes バケツごと）
-        let labelInterval = 60 / vm.bucketMinutes
+        let labelSpanMinutes: Int
+        switch vm.bucketMinutes {
+        case 1:  labelSpanMinutes = 15
+        case 5:  labelSpanMinutes = 30
+        default: labelSpanMinutes = 60
+        }
+        let labelInterval = labelSpanMinutes / vm.bucketMinutes
 
         return ScrollView(.horizontal, showsIndicators: false) {
             Chart(timeline) { bucket in
