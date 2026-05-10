@@ -1,6 +1,6 @@
 name: YoutubeLiveLens
 options:
-  bundleIdPrefix: com.youtubelivelens
+  bundleIdPrefix: com.livelens
   deploymentTarget:
     iOS: "16.0"
   defaultConfig: Debug
@@ -30,7 +30,7 @@ targets:
           - UIInterfaceOrientationPortrait
         NSCameraUsageDescription: ""
     settings:
-      PRODUCT_BUNDLE_IDENTIFIER: com.youtubelivelens.app
+      PRODUCT_BUNDLE_IDENTIFIER: com.livelens.app
       SWIFT_VERSION: "5.9"
       TARGETED_DEVICE_FAMILY: "1"
       ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
