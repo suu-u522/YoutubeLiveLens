@@ -39,15 +39,17 @@ struct HomeView: View {
                 URLInputSheet(vm: vm)
             }
             .navigationDestination(isPresented: Binding(
-                get: { vm.isNavigating },
-                set: { vm.isNavigating = $0 }
+                get: { vm.navigationTarget != nil },
+                set: { if !$0 { vm.navigationTarget = nil } }
             )) {
                 switch vm.navigationTarget {
                 case .progress(let jobId):
                     AnalysisProgressView(jobId: jobId)
                         .environmentObject(vm)
+                        .id(jobId)
                 case .result(let job):
                     ResultView(job: job)
+                        .id(job.id)
                 case nil:
                     EmptyView()
                 }

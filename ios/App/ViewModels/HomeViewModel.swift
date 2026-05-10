@@ -30,11 +30,6 @@ final class HomeViewModel: ObservableObject {
         }
     }
 
-    var isNavigating: Bool {
-        get { navigationTarget != nil }
-        set { if !newValue { navigationTarget = nil } }
-    }
-
     // MARK: - 制限ロジック
 
     private static let freeLimit = 3
