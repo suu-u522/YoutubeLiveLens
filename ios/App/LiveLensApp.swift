@@ -6,7 +6,7 @@ import FirebaseMessaging
 import GoogleMobileAds
 
 @main
-struct YoutubeLiveLensApp: App {
+struct LiveLensApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {

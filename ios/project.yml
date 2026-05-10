@@ -1,4 +1,4 @@
-name: YoutubeLiveLens
+name: LiveLens
 options:
   bundleIdPrefix: com.livelens
   deploymentTarget:
@@ -15,15 +15,15 @@ packages:
     from: "11.0.0"
 
 schemes:
-  YoutubeLiveLens:
+  LiveLens:
     build:
       targets:
-        YoutubeLiveLens: all
+        LiveLens: all
     run:
       config: Debug
 
 targets:
-  YoutubeLiveLens:
+  LiveLens:
     type: application
     platform: iOS
     deploymentTarget: "16.0"
