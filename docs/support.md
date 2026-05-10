@@ -4,7 +4,7 @@
 
 ご質問・不具合のご報告は以下のメールアドレスまでお気軽にどうぞ。
 
-koron.konan123@gmail.com
+[livelens-support@suu-u.com](mailto:livelens-support@suu-u.com)
 
 ## よくある質問
 

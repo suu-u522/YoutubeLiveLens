@@ -50,4 +50,4 @@
 
 プライバシーに関するご質問は以下までご連絡ください。
 
-メール：koron.konan123@gmail.com
+メール：[livelens-support@suu-u.com](mailto:livelens-support@suu-u.com)
