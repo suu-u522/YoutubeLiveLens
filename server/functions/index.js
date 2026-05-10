@@ -288,7 +288,7 @@ exports.onJobCreated = onDocumentCreated(
         const message = {
           notification: {
             title: "分析完了！",
-            body: `${title ?? "動画"}の分析が完了しました`,
+            body: "ライブチャットの分析が完了しました",
           },
           data: { jobId },
         };
