@@ -255,9 +255,9 @@ exports.onJobCreated = onDocumentCreated(
     const data = event.data?.data();
     if (!data) return;
 
-    const { videoId, fcmTokens = [] } = data;
+    const { platform = "youtube", videoId, fcmTokens = [] } = data;
     const jobRef = db.collection("analysisJobs").doc(jobId);
-    const videoRef = db.collection("videoAnalysis").doc(videoId);
+    const videoRef = db.collection("videoAnalysis").doc(`${platform}_${videoId}`);
 
     try {
       // メタデータとcontinuationトークンを並行取得
