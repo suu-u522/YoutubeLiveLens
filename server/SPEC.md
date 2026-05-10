@@ -32,12 +32,14 @@
 
 ```
 1. videoId をURLから抽出
-2. videoAnalysis/{videoId} をトランザクションで確認
+2. YouTube Data API で liveStreamingDetails を確認
+   - 存在しない → HttpsError（ライブ以外は分析不可）
+3. videoAnalysis/{videoId} をトランザクションで確認
    - fetching → 既存 jobId を返却 + fcmToken を fcmTokens 配列に追加（ファンアウト通知）
    - done    → 既存 jobId を即返却
    - error / 未作成 → 新規ジョブを作成してロック
-3. analysisJobs/{jobId} を作成（fcmTokens 配列を含む）
-4. jobId を即返却 → onJobCreated トリガーが後続処理を担う
+4. analysisJobs/{jobId} を作成（fcmTokens 配列を含む）
+5. jobId を即返却 → onJobCreated トリガーが後続処理を担う
 ```
 
 ---
@@ -161,8 +163,9 @@ POST https://www.youtube.com/youtubei/v1/live_chat/get_live_chat_replay
 動画メタデータ（タイトル・配信日・配信時間）の取得に使用。
 
 - 環境変数 `YOUTUBE_API_KEY` が必要
-- エンドポイント: `GET https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,liveStreamingDetails&id={videoId}&key={apiKey}`
-- `liveStreamingDetails` が存在しない場合はエラー（ライブ以外の動画を拒否）
+- ライブチェック: `part=liveStreamingDetails` のみで事前確認（analyzeChat 内）
+- メタデータ取得: `part=snippet,contentDetails`（onJobCreated 内）
+- `liveStreamingDetails` が存在しない場合は analyzeChat で HttpsError を返す
 - `publishedAt` の先頭10文字（`YYYY-MM-DD`）を `publishDate` として保存
 - `contentDetails.duration`（ISO 8601形式）を秒数に変換して `lengthSeconds` として保存
 
