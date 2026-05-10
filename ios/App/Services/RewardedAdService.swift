@@ -7,7 +7,7 @@ final class RewardedAdService: NSObject, ObservableObject {
     static let shared = RewardedAdService()
 
     // 本番では実際の広告ユニットIDに差し替える
-    private let adUnitID = "ca-app-pub-3940256099942544/1712485313"
+    private let adUnitID = "ca-app-pub-2494717257898446/6096861446"
 
     @Published private(set) var isAdReady = false
 
