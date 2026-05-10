@@ -161,7 +161,8 @@ POST https://www.youtube.com/youtubei/v1/live_chat/get_live_chat_replay
 動画メタデータ（タイトル・配信日・配信時間）の取得に使用。
 
 - 環境変数 `YOUTUBE_API_KEY` が必要
-- エンドポイント: `GET https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id={videoId}&key={apiKey}`
+- エンドポイント: `GET https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,liveStreamingDetails&id={videoId}&key={apiKey}`
+- `liveStreamingDetails` が存在しない場合はエラー（ライブ以外の動画を拒否）
 - `publishedAt` の先頭10文字（`YYYY-MM-DD`）を `publishDate` として保存
 - `contentDetails.duration`（ISO 8601形式）を秒数に変換して `lengthSeconds` として保存
 

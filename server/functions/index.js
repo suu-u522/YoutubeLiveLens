@@ -43,13 +43,17 @@ async function fetchVideoMetadata(videoId) {
   const apiKey = process.env.YOUTUBE_API_KEY;
   if (!apiKey) throw new Error("YOUTUBE_API_KEY が設定されていません");
 
-  const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${videoId}&key=${apiKey}`;
+  const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,liveStreamingDetails&id=${videoId}&key=${apiKey}`;
   const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
   if (!res.ok) throw new Error(`YouTube API エラー: ${res.status}`);
 
   const data = await res.json();
   const item = data.items?.[0];
   if (!item) throw new Error("動画が見つかりません");
+
+  if (!item.liveStreamingDetails) {
+    throw new Error("ライブ配信のアーカイブのみ対応しています");
+  }
 
   return {
     title: item.snippet.title ?? null,
