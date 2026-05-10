@@ -28,7 +28,6 @@ struct PaywallView: View {
             VStack(alignment: .leading, spacing: 16) {
                 featureRow(icon: "infinity", text: "分析本数が無制限に")
                 featureRow(icon: "chart.bar.fill", text: "コメント推移グラフを何度でも")
-                featureRow(icon: "magnifyingglass", text: "キーワード検索が使い放題")
             }
             .padding(.horizontal, 32)
 
