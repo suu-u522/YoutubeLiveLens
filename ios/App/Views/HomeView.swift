@@ -323,7 +323,7 @@ struct URLInputSheet: View {
                 }
                 Button("キャンセル", role: .cancel) {}
             } message: {
-                Text("広告を視聴すると1回分析できます")
+                Text("広告を視聴すると分析を続けられます")
             }
         }
         .presentationDetents([.medium])

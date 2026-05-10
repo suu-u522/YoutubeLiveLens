@@ -25,6 +25,9 @@ final class FCMService: NSObject, ObservableObject, MessagingDelegate, UNUserNot
 
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         self.fcmToken = fcmToken
+        #if DEBUG
+        print("FCM token:", fcmToken ?? "nil")
+        #endif
     }
 
     // MARK: - UNUserNotificationCenterDelegate（フォアグラウンドでも通知を表示）
