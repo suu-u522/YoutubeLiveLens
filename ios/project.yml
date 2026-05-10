@@ -19,6 +19,7 @@ schemes:
     build:
       targets:
         LiveLens: all
+        LiveLensShare: all
     run:
       config: Debug
 
@@ -41,6 +42,9 @@ targets:
           - UIInterfaceOrientationPortrait
         NSCameraUsageDescription: ""
         GADApplicationIdentifier: ca-app-pub-2494717257898446~8101804143
+        CFBundleURLTypes:
+          - CFBundleURLSchemes:
+              - livelens
         SKAdNetworkItems:
           - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
           - SKAdNetworkIdentifier: 4fzdc2evr5.skadnetwork
@@ -66,9 +70,32 @@ targets:
         product: FirebaseFunctions
       - package: GoogleMobileAds
         product: GoogleMobileAds
+      - target: LiveLensShare
+        embed: true
     preBuildScripts:
       - name: Firebase GoogleService-Info Check
         script: |
           if [ ! -f "${SRCROOT}/App/GoogleService-Info.plist" ]; then
             echo "warning: GoogleService-Info.plist が見つかりません。Firebase Consoleからダウンロードして追加してください。"
           fi
+
+  LiveLensShare:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: ShareExtension
+    info:
+      path: ShareExtension/Info.plist
+      properties:
+        CFBundleDisplayName: LiveLens
+        NSExtension:
+          NSExtensionAttributes:
+            NSExtensionActivationRule:
+              NSExtensionActivationSupportsWebURLWithMaxCount: 1
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.livelens.app.share
+      SWIFT_VERSION: "5.9"
+      TARGETED_DEVICE_FAMILY: "1"

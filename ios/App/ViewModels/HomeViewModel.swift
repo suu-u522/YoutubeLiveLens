@@ -69,6 +69,25 @@ final class HomeViewModel: ObservableObject {
         for entry in historyStore.entries where entry.status == .fetching {
             startListening(jobId: entry.id)
         }
+        NotificationCenter.default.addObserver(
+            forName: .incomingAnalysisURL,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            guard let url = notification.object as? URL else { return }
+            self?.handleIncomingURL(url)
+        }
+    }
+
+    // MARK: - 外部URLからの起動
+
+    func handleIncomingURL(_ url: URL) {
+        guard url.scheme == "livelens",
+              url.host == "analyze",
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let youtubeURL = components.queryItems?.first(where: { $0.name == "url" })?.value else { return }
+        urlText = youtubeURL
+        showURLSheet = true
     }
 
     // MARK: - 分析開始

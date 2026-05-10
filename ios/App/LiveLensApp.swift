@@ -12,6 +12,9 @@ struct LiveLensApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
+                .onOpenURL { url in
+                    NotificationCenter.default.post(name: .incomingAnalysisURL, object: url)
+                }
         }
     }
 }

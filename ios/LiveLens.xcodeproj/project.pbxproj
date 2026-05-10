@@ -13,17 +13,20 @@
 		1CE1BD13BA461ABF046129D6 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C003E1ABCFDD30A2E592C6 /* ResultView.swift */; };
 		25E7515230AA4AA338548714 /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A187068A73AB2C45B7DDC253 /* ResultViewModel.swift */; };
 		262431396ADFA304D5C6B627 /* AnalysisJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2891CC24194936B167E4712 /* AnalysisJob.swift */; };
+		3B9631B48D04F363CF5F2330 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF65B53382C85B5EEE9996AD /* ShareViewController.swift */; };
 		3FCD0B703353B50CB0668287 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2AD09B57FB0E6A0D2A08C5B /* Assets.xcassets */; };
 		50072F07F216DF5D65C68DC1 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 43CD9CAF6A7C4F4E2EEA4051 /* FirebaseMessaging */; };
 		51DFA6C94DA7BFD74A2D018D /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC28771E2C2496F3A277491 /* FirebaseService.swift */; };
 		5A01A831E80B8886039B576F /* AnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C891ED4D99CFE8D17B33CE98 /* AnalysisViewModel.swift */; };
 		5A92C6C44BBCC7DB4BEF304B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B29FA108BAAF5E8087D95CD3 /* Launch Screen.storyboard */; };
+		5CCC49502D0C08D761C13DCC /* Notification+LiveLens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1521D1E7923BD3815A552B82 /* Notification+LiveLens.swift */; };
 		5D66D8E3C427D7FFC5FEFAEE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 140F2F8767DB693E1B41269E /* GoogleService-Info.plist */; };
 		5E7D3E19B99DA8BE62789D0E /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5081E2670E5A858B36F730DD /* SearchViewModel.swift */; };
 		6698FACD6B1B929AFE9A41BB /* AnalysisProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBBD61877AE7EFCD6DD2DD5 /* AnalysisProgressView.swift */; };
 		681340AD93CBA6E29EEDA112 /* RewardedAdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD09A69F761E8128EF13299 /* RewardedAdService.swift */; };
 		700B9CC33326A3B1EC544D36 /* HistoryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C875BCDF75BC080AEEE100 /* HistoryEntry.swift */; };
 		74653AC233D3FA29C1E58F0C /* HistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2229CA651537A74686F475 /* HistoryStore.swift */; };
+		7B647599A0C91DDA4019C9E9 /* LiveLensShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 85C266C57E876648095ABD43 /* LiveLensShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		838F31B820A0FF1A694DC036 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7762F1070D7C5B8CB598B03 /* HomeView.swift */; };
 		9998CDD5DD277681CF0FF6A0 /* FCMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D09091D8BB20DB8EC36904 /* FCMService.swift */; };
 		B3A42384ACC7F044405A6BE1 /* CommentBucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB92FD7405EB1D90FE1A703E /* CommentBucket.swift */; };
@@ -32,15 +35,41 @@
 		E63C44C0F405B0A910878F90 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 3BFDFEA2A23CC70B1319275B /* FirebaseFunctions */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		22FAEDF29CAD492AE5C3817D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC8CEDD06CA7724C644E278B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5384832D750B5AAD7EA4D4D4;
+			remoteInfo = LiveLensShare;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		87F36BD881CD81D4242F7696 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7B647599A0C91DDA4019C9E9 /* LiveLensShare.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		00C003E1ABCFDD30A2E592C6 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		07D09091D8BB20DB8EC36904 /* FCMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMService.swift; sourceTree = "<group>"; };
 		140F2F8767DB693E1B41269E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1521D1E7923BD3815A552B82 /* Notification+LiveLens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+LiveLens.swift"; sourceTree = "<group>"; };
 		178F4932E291B268403B7916 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		3FBBD61877AE7EFCD6DD2DD5 /* AnalysisProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisProgressView.swift; sourceTree = "<group>"; };
 		48BABC2EF78BC97E4AAF91EC /* LiveLensApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLensApp.swift; sourceTree = "<group>"; };
 		5081E2670E5A858B36F730DD /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		5DC28771E2C2496F3A277491 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		85C266C57E876648095ABD43 /* LiveLensShare.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = LiveLensShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A187068A73AB2C45B7DDC253 /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
 		A2AD09B57FB0E6A0D2A08C5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B29FA108BAAF5E8087D95CD3 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -49,7 +78,9 @@
 		C4C875BCDF75BC080AEEE100 /* HistoryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntry.swift; sourceTree = "<group>"; };
 		C891ED4D99CFE8D17B33CE98 /* AnalysisViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewModel.swift; sourceTree = "<group>"; };
 		CE2990C9D70DA3621A280FF6 /* LiveLens.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LiveLens.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF65B53382C85B5EEE9996AD /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		D2891CC24194936B167E4712 /* AnalysisJob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisJob.swift; sourceTree = "<group>"; };
+		D3036E037850245685A64584 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E19CE2AE6A4116541F4AAC11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7762F1070D7C5B8CB598B03 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EDD09A69F761E8128EF13299 /* RewardedAdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAdService.swift; sourceTree = "<group>"; };
@@ -96,8 +127,18 @@
 			isa = PBXGroup;
 			children = (
 				CE2990C9D70DA3621A280FF6 /* LiveLens.app */,
+				85C266C57E876648095ABD43 /* LiveLensShare.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5A188D22C789A1DEF7D67A5D /* ShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				D3036E037850245685A64584 /* Info.plist */,
+				CF65B53382C85B5EEE9996AD /* ShareViewController.swift */,
+			);
+			path = ShareExtension;
 			sourceTree = "<group>";
 		};
 		8F1729D48CD27B83E27BD4B1 /* App */ = {
@@ -108,6 +149,7 @@
 				E19CE2AE6A4116541F4AAC11 /* Info.plist */,
 				B29FA108BAAF5E8087D95CD3 /* Launch Screen.storyboard */,
 				48BABC2EF78BC97E4AAF91EC /* LiveLensApp.swift */,
+				F3E597BC1D61D2436A6F40B0 /* Extensions */,
 				39ECF13836B48209B9E1EF94 /* Models */,
 				DD8C2A66891ED94AFA2462E2 /* Services */,
 				3588DE4432960C2FA3EF9CD1 /* ViewModels */,
@@ -138,10 +180,19 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		F3E597BC1D61D2436A6F40B0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1521D1E7923BD3815A552B82 /* Notification+LiveLens.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		F709721454D474702BF33CE6 = {
 			isa = PBXGroup;
 			children = (
 				8F1729D48CD27B83E27BD4B1 /* App */,
+				5A188D22C789A1DEF7D67A5D /* ShareExtension */,
 				57BBE2DCBFE52B7AFFA1213E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -149,6 +200,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5384832D750B5AAD7EA4D4D4 /* LiveLensShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E55C18AF33D3A6086E98C0D8 /* Build configuration list for PBXNativeTarget "LiveLensShare" */;
+			buildPhases = (
+				C5EFC83D4A78A34B28E0ACAB /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LiveLensShare;
+			packageProductDependencies = (
+			);
+			productName = LiveLensShare;
+			productReference = 85C266C57E876648095ABD43 /* LiveLensShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		6C4E60743A21E1BEB6B8434A /* LiveLens */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7EA8E5DE2DD2457FA993D68B /* Build configuration list for PBXNativeTarget "LiveLens" */;
@@ -157,10 +225,12 @@
 				D2A369284DFAE6726329A378 /* Sources */,
 				8D029EE33CACF0756E5A2AB1 /* Resources */,
 				A84F7F13F8A849212F05DC70 /* Frameworks */,
+				87F36BD881CD81D4242F7696 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				447DC89C336B3CD05054A53A /* PBXTargetDependency */,
 			);
 			name = LiveLens;
 			packageProductDependencies = (
@@ -203,6 +273,7 @@
 			projectRoot = "";
 			targets = (
 				6C4E60743A21E1BEB6B8434A /* LiveLens */,
+				5384832D750B5AAD7EA4D4D4 /* LiveLensShare */,
 			);
 		};
 /* End PBXProject section */
@@ -242,6 +313,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C5EFC83D4A78A34B28E0ACAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B9631B48D04F363CF5F2330 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2A369284DFAE6726329A378 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -257,6 +336,7 @@
 				838F31B820A0FF1A694DC036 /* HomeView.swift in Sources */,
 				C76A590693E7FE5684C1CA87 /* HomeViewModel.swift in Sources */,
 				0C9EFA27D48E7522F3664957 /* LiveLensApp.swift in Sources */,
+				5CCC49502D0C08D761C13DCC /* Notification+LiveLens.swift in Sources */,
 				1CE1BD13BA461ABF046129D6 /* ResultView.swift in Sources */,
 				25E7515230AA4AA338548714 /* ResultViewModel.swift in Sources */,
 				681340AD93CBA6E29EEDA112 /* RewardedAdService.swift in Sources */,
@@ -266,6 +346,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		447DC89C336B3CD05054A53A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5384832D750B5AAD7EA4D4D4 /* LiveLensShare */;
+			targetProxy = 22FAEDF29CAD492AE5C3817D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2067175567A63B9B078BB6BA /* Debug */ = {
@@ -360,6 +448,23 @@
 			};
 			name = Release;
 		};
+		A19417ED9A26265048D0559F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.livelens.app.share;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
 		B9ABF014D7AD8947EAD7C04F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -423,6 +528,23 @@
 			};
 			name = Debug;
 		};
+		F06E99595A17C97DEEBBF9E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.livelens.app.share;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -440,6 +562,15 @@
 			buildConfigurations = (
 				2067175567A63B9B078BB6BA /* Debug */,
 				33CF0BD00F7048EDE4FC18D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E55C18AF33D3A6086E98C0D8 /* Build configuration list for PBXNativeTarget "LiveLensShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A19417ED9A26265048D0559F /* Debug */,
+				F06E99595A17C97DEEBBF9E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

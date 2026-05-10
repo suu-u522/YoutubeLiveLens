@@ -21,6 +21,20 @@
                ReferencedContainer = "container:LiveLens.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5384832D750B5AAD7EA4D4D4"
+               BuildableName = "LiveLensShare.appex"
+               BlueprintName = "LiveLensShare"
+               ReferencedContainer = "container:LiveLens.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
