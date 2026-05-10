@@ -3,6 +3,7 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var vm = HomeViewModel()
     @ObservedObject private var historyStore = HistoryStore.shared
+    @State private var showLicenses = false
 
     var body: some View {
         NavigationStack {
@@ -21,6 +22,18 @@ struct HomeView: View {
                             .foregroundStyle(.primary)
                     }
                 }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showLicenses = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .sheet(isPresented: $showLicenses) {
+                LicensesView()
             }
             .sheet(isPresented: $vm.showURLSheet) {
                 URLInputSheet(vm: vm)
@@ -385,6 +398,49 @@ struct URLInputSheet: View {
                 isLiveVideo = isArchive
                 previewTitle = title
             }
+        }
+    }
+}
+
+// MARK: - ライセンス
+
+struct LicensesView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section("このアプリについて") {
+                    LabeledContent("バージョン", value: "1.0")
+                    LabeledContent("コピーライト", value: "© 2026 LiveLens")
+                }
+                Section("オープンソースライセンス") {
+                    licenseRow(
+                        name: "Firebase iOS SDK",
+                        license: "Apache License 2.0",
+                        url: "https://github.com/firebase/firebase-ios-sdk/blob/main/LICENSE"
+                    )
+                    licenseRow(
+                        name: "Google Mobile Ads SDK",
+                        license: "Google APIs Terms of Service",
+                        url: "https://developers.google.com/terms"
+                    )
+                }
+            }
+            .navigationTitle("情報")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("閉じる") { dismiss() }
+                }
+            }
+        }
+    }
+
+    private func licenseRow(name: String, license: String, url: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(name).font(.subheadline)
+            Text(license).font(.caption).foregroundStyle(.secondary)
         }
     }
 }
