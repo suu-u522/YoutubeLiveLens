@@ -1,5 +1,7 @@
 import SwiftUI
 import FirebaseCore
+import FirebaseFirestore
+import FirebaseFunctions
 import FirebaseMessaging
 
 @main
@@ -19,6 +21,16 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         FirebaseApp.configure()
+
+        #if DEBUG
+        let settings = FirestoreSettings()
+        settings.host = "127.0.0.1:8080"
+        settings.isSSLEnabled = false
+        settings.cacheSettings = MemoryCacheSettings()
+        Firestore.firestore().settings = settings
+        Functions.functions(region: "us-central1").useEmulator(withHost: "127.0.0.1", port: 5001)
+        #endif
+
         FCMService.shared.setup()
         Task { await FCMService.shared.requestPermission() }
         return true

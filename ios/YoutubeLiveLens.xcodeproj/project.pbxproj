@@ -16,6 +16,7 @@
 		3760C888D2280E0DA62D4DB7 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B091D2134E164EE04F971D9E /* HomeViewModel.swift */; };
 		4A87A4E9B7A1A1FAF6E2E1CE /* AnalysisJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECA71C91A90C10C5CA054A /* AnalysisJob.swift */; };
 		4C94EB19CCF3A58238D1C7E8 /* AnalysisProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F7051ADE965E56A93136CAB /* AnalysisProgressView.swift */; };
+		619622C3D8076F7C8C137D32 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B197E436D2F000B102263F /* ResultView.swift */; };
 		6B69B793408AAF5F5EA1E89E /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 9C91562342826FF6A97E3F49 /* FirebaseFunctions */; };
 		6C7A24B7B6E17A5AF0B9E4F1 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A04C042112A5B9EDE4C5370 /* HomeView.swift */; };
 		7ABAABC4A0769520BB1514F2 /* HistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BDF1C98EBE534C8E3B1D63 /* HistoryStore.swift */; };
@@ -43,6 +44,7 @@
 		96BDF1C98EBE534C8E3B1D63 /* HistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStore.swift; sourceTree = "<group>"; };
 		B091D2134E164EE04F971D9E /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B4AE69CB3B534A9786B9CDC4 /* CommentBucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBucket.swift; sourceTree = "<group>"; };
+		B9B197E436D2F000B102263F /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 			children = (
 				0F7051ADE965E56A93136CAB /* AnalysisProgressView.swift */,
 				3A04C042112A5B9EDE4C5370 /* HomeView.swift */,
+				B9B197E436D2F000B102263F /* ResultView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				7ABAABC4A0769520BB1514F2 /* HistoryStore.swift in Sources */,
 				6C7A24B7B6E17A5AF0B9E4F1 /* HomeView.swift in Sources */,
 				3760C888D2280E0DA62D4DB7 /* HomeViewModel.swift in Sources */,
+				619622C3D8076F7C8C137D32 /* ResultView.swift in Sources */,
 				060684D286730F3BDBA03E1E /* ResultViewModel.swift in Sources */,
 				180DCFCACF7D7EB7B635308F /* SearchViewModel.swift in Sources */,
 				1EF80138F465FE77AAFEA0F6 /* YoutubeLiveLensApp.swift in Sources */,

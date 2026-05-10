@@ -78,6 +78,8 @@ final class FirebaseService: ObservableObject {
         )
         job.title = data["title"] as? String
         job.thumbnailUrl = data["thumbnailUrl"] as? String
+        job.publishDate = data["publishDate"] as? String
+        job.lengthSeconds = data["lengthSeconds"] as? Int
         job.errorMessage = data["errorMessage"] as? String
 
         if let rawTimeline = data["timeline"] as? [[String: Any]] {

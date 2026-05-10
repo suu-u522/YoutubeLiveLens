@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var vm = HomeViewModel()
+    @ObservedObject private var historyStore = HistoryStore.shared
 
     var body: some View {
         NavigationStack {
@@ -29,20 +30,22 @@ struct HomeView: View {
 
     private var historyList: some View {
         Group {
-            if vm.historyStore.entries.isEmpty {
+            if historyStore.entries.isEmpty {
                 emptyState
             } else {
                 List {
-                    ForEach(vm.historyStore.entries) { entry in
+                    ForEach(historyStore.entries) { entry in
                         HistoryCard(entry: entry)
                             .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
                             .onTapGesture { vm.tapHistory(entry) }
+                            .opacity(entry.status == .fetching ? 1.0 : 1.0)
+                            .allowsHitTesting(entry.status != .fetching)
                     }
                     .onDelete { indexSet in
-                        indexSet.map { vm.historyStore.entries[$0].id }.forEach {
-                            vm.historyStore.remove(id: $0)
+                        indexSet.map { historyStore.entries[$0].id }.forEach {
+                            historyStore.remove(id: $0)
                         }
                     }
                 }
@@ -129,10 +132,23 @@ struct HistoryCard: View {
             Text(entry.title ?? "タイトル取得中...")
                 .font(.subheadline.weight(.medium))
                 .lineLimit(2)
-            Text(entry.createdAt.formatted(.relative(presentation: .named)))
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            if entry.status == .fetching {
+                Text("\(entry.totalMessages.formatted()) 件取得中...")
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            } else {
+                Text(dateLabel)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
+    }
+
+    private var dateLabel: String {
+        if let pub = entry.publishDate {
+            return "配信日: \(pub)"
+        }
+        return entry.createdAt.formatted(.relative(presentation: .named))
     }
 
     private var statusBadge: some View {

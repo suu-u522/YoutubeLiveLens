@@ -57,6 +57,8 @@ struct AnalysisJob: Identifiable, Codable {
     let url: String
     var title: String?
     var thumbnailUrl: String?
+    var publishDate: String?     // ISO 8601 (e.g. "2024-01-15")
+    var lengthSeconds: Int?      // 配信時間（秒）
     var status: JobStatus
     var progress: Int
     var totalMessages: Int

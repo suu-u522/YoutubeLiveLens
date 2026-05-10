@@ -19,6 +19,7 @@ final class HistoryStore: ObservableObject {
             videoId: job.videoId,
             title: job.title,
             thumbnailUrl: job.thumbnailUrl,
+            publishDate: job.publishDate,
             createdAt: Date(),
             status: job.status,
             totalMessages: job.totalMessages
@@ -28,10 +29,11 @@ final class HistoryStore: ObservableObject {
         save()
     }
 
-    func update(jobId: String, title: String?, thumbnailUrl: String?, status: JobStatus, totalMessages: Int) {
+    func update(jobId: String, title: String?, thumbnailUrl: String?, publishDate: String?, status: JobStatus, totalMessages: Int) {
         guard let idx = entries.firstIndex(where: { $0.id == jobId }) else { return }
         entries[idx].title = title ?? entries[idx].title
         entries[idx].thumbnailUrl = thumbnailUrl ?? entries[idx].thumbnailUrl
+        entries[idx].publishDate = publishDate ?? entries[idx].publishDate
         entries[idx].status = status
         entries[idx].totalMessages = totalMessages
         save()

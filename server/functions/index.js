@@ -1,4 +1,5 @@
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore, FieldValue } = require("firebase-admin/firestore");
 const { getMessaging } = require("firebase-admin/messaging");
@@ -32,7 +33,6 @@ async function fetchContinuationToken(videoId) {
   return html.substring(contStart, html.indexOf('"', contStart));
 }
 
-// ISO 8601 duration（例: PT1H30M45S）を秒数に変換
 function parseDuration(iso) {
   const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
   if (!m) return null;
@@ -93,8 +93,6 @@ async function fetchChatPage(continuation) {
   for (const action of actions) {
     const replay = action.replayChatItemAction ?? {};
     const offsetMs = parseInt(replay.videoOffsetTimeMsec ?? "0", 10);
-
-    // 待機室コメント（offset=0）は除外
     if (offsetMs === 0) continue;
 
     for (const inner of replay.actions ?? []) {
@@ -106,10 +104,7 @@ async function fetchChatPage(continuation) {
       if (!renderer) continue;
 
       const runs = renderer.message?.runs ?? [];
-      const text = runs
-        .map((r) => r.text ?? "")
-        .join("")
-        .trim();
+      const text = runs.map((r) => r.text ?? "").join("").trim();
       if (text) messages.push({ text, offsetMs });
     }
   }
@@ -121,8 +116,6 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// メッセージをバケツ単位でFirestoreに追記し、カウントを更新する
-// bucketCounts: { [bucketIndex]: number } はメモリ上に保持し続ける
 async function flushMessages(jobRef, messages, bucketCounts) {
   const byBucket = {};
   for (const msg of messages) {
@@ -164,7 +157,6 @@ function buildTimeline(bucketCounts) {
   return timeline;
 }
 
-// 盛り上がりTOP5を返す
 function getTop5(timeline) {
   return [...timeline]
     .sort((a, b) => b.count - a.count)
@@ -173,11 +165,11 @@ function getTop5(timeline) {
 }
 
 // ============================================================
-// Firebase Callable Function
+// analyzeChat — ジョブを作成してすぐ jobId を返す
 // ============================================================
 
 exports.analyzeChat = onCall(
-  { timeoutSeconds: 1800, memory: "512MiB" },
+  { timeoutSeconds: 60, memory: "256MiB" },
   async (request) => {
     const { url, fcmToken } = request.data;
 
@@ -190,7 +182,6 @@ exports.analyzeChat = onCall(
       throw new HttpsError("invalid-argument", "有効なYouTube URLではありません");
     }
 
-    // 同一動画の重複実行を防ぐ（トランザクションで排他制御）
     const videoRef = db.collection("videoAnalysis").doc(videoId);
     let jobRef;
 
@@ -198,15 +189,15 @@ exports.analyzeChat = onCall(
       const snap = await tx.get(videoRef);
       if (snap.exists) {
         const { status, jobId: existingId } = snap.data();
-        // 分析中 or 完了済みならそのjobIdを返す
         if (status === "fetching" || status === "done") return existingId;
       }
-      // 新規ジョブを作成してロック
       jobRef = db.collection("analysisJobs").doc();
       tx.set(videoRef, { jobId: jobRef.id, status: "fetching" });
+      // fcmToken もジョブに保存しておき、onJobCreated で使う
       tx.set(jobRef, {
         videoId,
         url,
+        fcmToken: fcmToken ?? null,
         status: "fetching",
         progress: 0,
         totalMessages: 0,
@@ -215,17 +206,33 @@ exports.analyzeChat = onCall(
       return null;
     });
 
-    // 既存ジョブがあればそのまま返す
     if (existingJobId) return { jobId: existingJobId };
+    return { jobId: jobRef.id };
+  }
+);
 
-    const jobId = jobRef.id;
+// ============================================================
+// onJobCreated — ジョブ作成を検知してチャット取得を開始
+// ============================================================
+
+exports.onJobCreated = onDocumentCreated(
+  { document: "analysisJobs/{jobId}", timeoutSeconds: 1800, memory: "512MiB" },
+  async (event) => {
+    const jobId = event.params.jobId;
+    const data = event.data?.data();
+    if (!data) return;
+
+    const { videoId, fcmToken } = data;
+    const jobRef = db.collection("analysisJobs").doc(jobId);
+    const videoRef = db.collection("videoAnalysis").doc(videoId);
 
     try {
-      // YouTubeページからcontinuationトークンとタイトルを取得
+      // メタデータとcontinuationトークンを並行取得
       const [initialToken, { title, publishDate, lengthSeconds }] = await Promise.all([
         fetchContinuationToken(videoId),
         fetchVideoMetadata(videoId),
       ]);
+
       const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
       const metaUpdate = { thumbnailUrl };
       if (title) metaUpdate.title = title;
@@ -233,7 +240,7 @@ exports.analyzeChat = onCall(
       if (lengthSeconds !== null) metaUpdate.lengthSeconds = lengthSeconds;
       await jobRef.update(metaUpdate);
 
-      // 全ページ取得
+      // チャット全件取得
       let continuation = initialToken;
       let pageMessages = [];
       const bucketCounts = {};
@@ -246,7 +253,6 @@ exports.analyzeChat = onCall(
         totalMessages += messages.length;
         page++;
 
-        // 50ページごとにFlushして配列をクリア
         if (page % 50 === 0) {
           await flushMessages(jobRef, pageMessages, bucketCounts);
           pageMessages = [];
@@ -257,23 +263,20 @@ exports.analyzeChat = onCall(
         await sleep(500);
       }
 
-      // 残分をFlush
       if (pageMessages.length > 0) {
         await flushMessages(jobRef, pageMessages, bucketCounts);
       }
 
-      // bucketCountsからtimeline/top5を生成
       const timeline = buildTimeline(bucketCounts);
       const top5 = getTop5(timeline);
-
-      // 集計結果をジョブドキュメントに保存
       const completedAt = FieldValue.serverTimestamp();
+
       await Promise.all([
         jobRef.update({ status: "done", progress: page, totalMessages, timeline, top5, completedAt }),
         videoRef.update({ status: "done", completedAt }),
       ]);
 
-      // FCMプッシュ通知（トークンがあれば送信）
+      // FCMプッシュ通知
       if (fcmToken && typeof fcmToken === "string") {
         await getMessaging().send({
           token: fcmToken,
@@ -284,13 +287,11 @@ exports.analyzeChat = onCall(
           data: { jobId },
         });
       }
-
-      return { jobId };
     } catch (err) {
       await Promise.all([
         jobRef.update({ status: "error", errorMessage: err.message ?? "不明なエラー" }),
         videoRef.update({ status: "error" }),
       ]);
-      throw new HttpsError("internal", err.message);
     }
-  });
+  }
+);
