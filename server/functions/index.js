@@ -249,7 +249,7 @@ exports.analyzeChat = onCall(
 // ============================================================
 
 exports.onJobCreated = onDocumentCreated(
-  { document: "analysisJobs/{jobId}", timeoutSeconds: 1800, memory: "512MiB" },
+  { document: "analysisJobs/{jobId}", timeoutSeconds: 1800, memory: "256MiB", maxInstances: 5 },
   async (event) => {
     const jobId = event.params.jobId;
     const data = event.data?.data();

@@ -5,7 +5,7 @@
 | 関数名 | 種別 | タイムアウト | メモリ |
 |---|---|---|---|
 | `analyzeChat` | Callable (HTTPS) | 60秒 | 256MiB |
-| `onJobCreated` | Firestore onCreate トリガー | 1800秒 | 512MiB |
+| `onJobCreated` | Firestore onCreate トリガー | 1800秒 | 256MiB（maxInstances: 5） |
 
 ---
 
