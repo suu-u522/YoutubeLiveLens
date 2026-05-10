@@ -8,18 +8,10 @@ struct TimelineBucket: Identifiable, Codable {
     let count: Int
 
     var startTime: String {
-        formatMs(startMs)
-    }
-
-    private func formatMs(_ ms: Int) -> String {
-        let totalSeconds = ms / 1000
+        let totalSeconds = startMs / 1000
         let h = totalSeconds / 3600
         let m = (totalSeconds % 3600) / 60
-        let s = totalSeconds % 60
-        if h > 0 {
-            return String(format: "%d:%02d:%02d", h, m, s)
-        }
-        return String(format: "%d:%02d", m, s)
+        return String(format: "%02d:%02d", h, m)
     }
 }
 

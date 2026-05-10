@@ -53,7 +53,7 @@
 3. メタデータを jobドキュメントに保存（title, thumbnailUrl, publishDate, lengthSeconds）
 4. youtubei内部APIでチャットをページネーション全件取得（0.5秒間隔）
 5. 50ページごとにFirestoreへflush・進捗更新
-6. 5分バケツで集計 → timeline / top5 を生成
+6. 1分バケツで集計 → timeline / top5 を生成
 7. Firestoreに最終結果を保存（status: done）
 8. FCMプッシュ通知（fcmToken があれば）
 ```
@@ -88,7 +88,7 @@
 | `status` | string | `fetching` / `done` / `error` |
 | `progress` | number | 取得済みページ数（50ページごとに更新） |
 | `totalMessages` | number | 取得済みコメント数（50ページごとに更新） |
-| `timeline` | array | 5分バケツの集計結果（下記参照） |
+| `timeline` | array | 1分バケツの集計結果（下記参照） |
 | `top5` | array | 盛り上がりTOP5シーン（下記参照） |
 | `errorMessage` | string | エラー内容（errorのみ） |
 | `createdAt` | timestamp | ジョブ作成時刻 |
@@ -96,11 +96,13 @@
 
 #### timeline の要素
 
+バケツ単位は1分（60,000ms）。iOSクライアント側で5分・10分に集約して表示。
+
 ```json
 {
   "bucketIndex": 3,
-  "startMs": 900000,
-  "endMs": 1200000,
+  "startMs": 180000,
+  "endMs": 240000,
   "count": 42
 }
 ```

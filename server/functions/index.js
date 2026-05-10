@@ -119,7 +119,7 @@ function sleep(ms) {
 async function flushMessages(jobRef, messages, bucketCounts) {
   const byBucket = {};
   for (const msg of messages) {
-    const idx = Math.floor(msg.offsetMs / 300000);
+    const idx = Math.floor(msg.offsetMs / 60000);
     bucketCounts[idx] = (bucketCounts[idx] ?? 0) + 1;
     if (!byBucket[idx]) byBucket[idx] = [];
     byBucket[idx].push({ text: msg.text, offsetMs: msg.offsetMs });
@@ -133,8 +133,8 @@ async function flushMessages(jobRef, messages, bucketCounts) {
       const ref = jobRef.collection("comments").doc(String(idx));
       batch.set(ref, {
         bucketIndex: Number(idx),
-        startMs: Number(idx) * 300000,
-        endMs: (Number(idx) + 1) * 300000,
+        startMs: Number(idx) * 60000,
+        endMs: (Number(idx) + 1) * 60000,
         messages: FieldValue.arrayUnion(...msgs),
       }, { merge: true });
     }
@@ -149,8 +149,8 @@ function buildTimeline(bucketCounts) {
   for (let i = 0; i <= maxBucket; i++) {
     timeline.push({
       bucketIndex: i,
-      startMs: i * 300000,
-      endMs: (i + 1) * 300000,
+      startMs: i * 60000,
+      endMs: (i + 1) * 60000,
       count: bucketCounts[i] ?? 0,
     });
   }

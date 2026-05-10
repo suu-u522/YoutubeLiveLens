@@ -54,6 +54,11 @@ struct ResultView: View {
 
     private var summaryHeader: some View {
         VStack(alignment: .leading, spacing: 6) {
+            if let title = job.title {
+                Text(title)
+                    .font(.headline)
+                    .lineLimit(3)
+            }
             if let pub = job.publishDate {
                 Label(pub, systemImage: "calendar")
                     .font(.caption).foregroundStyle(.secondary)
@@ -72,9 +77,19 @@ struct ResultView: View {
 
     private var chartSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("コメント推移")
-                .font(.headline)
-                .padding(.horizontal, 16)
+            HStack {
+                Text("コメント推移")
+                    .font(.headline)
+                Spacer()
+                Picker("粒度", selection: $vm.bucketMinutes) {
+                    Text("1分").tag(1)
+                    Text("5分").tag(5)
+                    Text("10分").tag(10)
+                }
+                .pickerStyle(.segmented)
+                .fixedSize()
+            }
+            .padding(.horizontal, 16)
 
             if job.timeline.isEmpty {
                 Text("データがありません")
@@ -87,11 +102,13 @@ struct ResultView: View {
     }
 
     private var chartView: some View {
-        let timeline = job.timeline
+        let timeline = vm.aggregatedTimeline
         let maxCount = timeline.map(\.count).max() ?? 1
         let barWidth: CGFloat = 12
         let barSpacing: CGFloat = 4
         let chartWidth = CGFloat(timeline.count) * (barWidth + barSpacing) + 32
+        // X軸ラベルは1時間ごと（60 / bucketMinutes バケツごと）
+        let labelInterval = 60 / vm.bucketMinutes
 
         return ScrollView(.horizontal, showsIndicators: false) {
             Chart(timeline) { bucket in
@@ -104,10 +121,12 @@ struct ResultView: View {
                 .cornerRadius(2)
             }
             .chartXAxis {
-                AxisMarks(values: timeline.filter { $0.bucketIndex % 12 == 0 }.map(\.startTime)) { value in
+                AxisMarks(values: timeline.filter { $0.bucketIndex % labelInterval == 0 }.map(\.startTime)) { value in
                     AxisValueLabel(anchor: .top) {
                         if let label = value.as(String.self) {
-                            Text(label).font(.system(size: 9))
+                            Text(label)
+                                .font(.system(size: 9))
+                                .fixedSize()
                         }
                     }
                 }

@@ -138,9 +138,9 @@ struct HistoryCard: View {
                 .font(.subheadline.weight(.medium))
                 .lineLimit(2)
             if entry.status == .fetching {
-                Text("\(entry.totalMessages.formatted()) 件取得中...")
+                Text("取得中...")
                     .font(.caption)
-                    .foregroundStyle(.red)
+                    .foregroundStyle(.secondary)
             } else {
                 Text(dateLabel)
                     .font(.caption)
@@ -178,10 +178,56 @@ struct HistoryCard: View {
 struct URLInputSheet: View {
     @ObservedObject var vm: HomeViewModel
     @FocusState private var isFocused: Bool
+    @State private var previewTitle: String?
+    @State private var fetchTask: Task<Void, Never>?
+
+    private var videoId: String? {
+        guard let range = vm.urlText.range(of: "v=") else { return nil }
+        let after = vm.urlText[range.upperBound...]
+        if let end = after.firstIndex(of: "&") {
+            return String(after[after.startIndex..<end])
+        }
+        return after.isEmpty ? nil : String(after)
+    }
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 24) {
+            VStack(spacing: 20) {
+                // サムネイル＋タイトルプレビュー
+                if let vid = videoId,
+                   let thumbURL = URL(string: "https://i.ytimg.com/vi/\(vid)/hqdefault.jpg") {
+                    ZStack(alignment: .bottomLeading) {
+                        AsyncImage(url: thumbURL) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image.resizable().scaledToFill()
+                            default:
+                                Rectangle().foregroundStyle(Color(.systemGray5))
+                                    .overlay { ProgressView() }
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 180)
+                        .clipped()
+
+                        if let title = previewTitle {
+                            Text(title)
+                                .font(.caption.weight(.medium))
+                                .foregroundStyle(.white)
+                                .lineLimit(2)
+                                .padding(8)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(.black.opacity(0.55))
+                        }
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .transition(.opacity.combined(with: .scale(scale: 0.97)))
+                    .onChange(of: vid) { newId in
+                        fetchTitle(videoId: newId)
+                    }
+                    .onAppear { fetchTitle(videoId: vid) }
+                }
+
                 VStack(alignment: .leading, spacing: 8) {
                     Text("YouTube 動画URL")
                         .font(.subheadline)
@@ -260,5 +306,18 @@ struct URLInputSheet: View {
             .onAppear { isFocused = true }
         }
         .presentationDetents([.medium])
+    }
+
+    private func fetchTitle(videoId: String) {
+        previewTitle = nil
+        fetchTask?.cancel()
+        fetchTask = Task {
+            guard let url = URL(string: "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=\(videoId)&format=json") else { return }
+            guard let (data, _) = try? await URLSession.shared.data(from: url),
+                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  let title = json["title"] as? String else { return }
+            guard !Task.isCancelled else { return }
+            await MainActor.run { previewTitle = title }
+        }
     }
 }

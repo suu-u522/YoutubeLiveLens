@@ -3,8 +3,7 @@ import UIKit
 
 @MainActor
 final class ResultViewModel: ObservableObject {
-    @Published var selectedBucket: CommentBucket?
-    @Published var isLoadingComments = false
+    @Published var bucketMinutes: Int = 5
 
     let job: AnalysisJob
     private let service = FirebaseService.shared
@@ -13,17 +12,28 @@ final class ResultViewModel: ObservableObject {
         self.job = job
     }
 
-    func selectBucket(_ bucket: TimelineBucket) async {
-        isLoadingComments = true
-        do {
-            selectedBucket = try await service.fetchCommentBucket(
-                jobId: job.id,
-                bucketIndex: bucket.bucketIndex
-            )
-        } catch {
-            selectedBucket = nil
+    var aggregatedTimeline: [TimelineBucket] {
+        let source = job.timeline
+        guard !source.isEmpty else { return [] }
+        guard bucketMinutes > 1 else { return source }
+
+        var grouped: [Int: Int] = [:]
+        for bucket in source {
+            let groupIdx = bucket.bucketIndex / bucketMinutes
+            grouped[groupIdx] = (grouped[groupIdx] ?? 0) + bucket.count
         }
-        isLoadingComments = false
+
+        let maxGroup = grouped.keys.max() ?? 0
+        return (0...maxGroup).map { idx in
+            let startMs = idx * bucketMinutes * 60000
+            let endMs = startMs + bucketMinutes * 60000
+            return TimelineBucket(
+                bucketIndex: idx,
+                startMs: startMs,
+                endMs: endMs,
+                count: grouped[idx] ?? 0
+            )
+        }
     }
 
     func openInYouTube(startMs: Int) {
