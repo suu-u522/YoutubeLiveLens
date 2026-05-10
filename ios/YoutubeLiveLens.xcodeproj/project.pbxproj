@@ -21,10 +21,12 @@
 		6C7A24B7B6E17A5AF0B9E4F1 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A04C042112A5B9EDE4C5370 /* HomeView.swift */; };
 		7ABAABC4A0769520BB1514F2 /* HistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BDF1C98EBE534C8E3B1D63 /* HistoryStore.swift */; };
 		8265E49A6608FB9EB1FCAAD7 /* HistoryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808E8065895C6E2280643849 /* HistoryEntry.swift */; };
+		8B9EFB71BE9A60AC2870A113 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 767246257CCEF5084ACB5393 /* Assets.xcassets */; };
 		932D754396AFF6F112E12D51 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1BDF4F9010C714C5695875E3 /* GoogleService-Info.plist */; };
 		C462FB2A672459481B4C17F7 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4D731D3299C769F1C55612 /* FirebaseService.swift */; };
 		D0FBF84CF35ACBC540106286 /* CommentBucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4AE69CB3B534A9786B9CDC4 /* CommentBucket.swift */; };
 		D3EFD59E29DA1576F2900D26 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AA0D5D466EADCFD40482FA /* SearchView.swift */; };
+		DBD801274DBB3184F9E22137 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 889076401189234EF8B4495C /* Launch Screen.storyboard */; };
 		ED07B22CAFC671A2FF1380A8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 910B535BC8F5247AB21971B0 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
@@ -38,10 +40,12 @@
 		48F8970427859F168B659A9E /* AnalysisViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewModel.swift; sourceTree = "<group>"; };
 		4ED1ECFE82AE4A6D7D9D0966 /* ResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
 		75ECA71C91A90C10C5CA054A /* AnalysisJob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisJob.swift; sourceTree = "<group>"; };
+		767246257CCEF5084ACB5393 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		77CC631876E8028E42FE307A /* YoutubeLiveLens.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = YoutubeLiveLens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B4D731D3299C769F1C55612 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		808E8065895C6E2280643849 /* HistoryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntry.swift; sourceTree = "<group>"; };
 		87B2A8E2C4F8297422A598EB /* YoutubeLiveLensApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeLiveLensApp.swift; sourceTree = "<group>"; };
+		889076401189234EF8B4495C /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		96BDF1C98EBE534C8E3B1D63 /* HistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStore.swift; sourceTree = "<group>"; };
 		B091D2134E164EE04F971D9E /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B4AE69CB3B534A9786B9CDC4 /* CommentBucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBucket.swift; sourceTree = "<group>"; };
@@ -106,8 +110,10 @@
 		CC20375B17C9367E90D50EE3 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				767246257CCEF5084ACB5393 /* Assets.xcassets */,
 				1BDF4F9010C714C5695875E3 /* GoogleService-Info.plist */,
 				2612776A09845621D25DD541 /* Info.plist */,
+				889076401189234EF8B4495C /* Launch Screen.storyboard */,
 				87B2A8E2C4F8297422A598EB /* YoutubeLiveLensApp.swift */,
 				EB7AE24FA15CA5CB30CC47E0 /* Models */,
 				0E26588E4355DB8A3959CC3F /* Services */,
@@ -199,7 +205,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B9EFB71BE9A60AC2870A113 /* Assets.xcassets in Resources */,
 				932D754396AFF6F112E12D51 /* GoogleService-Info.plist in Resources */,
+				DBD801274DBB3184F9E22137 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

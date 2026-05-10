@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchLogo" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BTD-1j-IR4">
+                                <rect key="frame" x="96.666666666666686" y="351" width="200" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="0vc-vF-xat"/>
+                                    <constraint firstAttribute="width" constant="200" id="F6T-71-Jbe"/>
+                                    <constraint firstAttribute="width" secondItem="BTD-1j-IR4" secondAttribute="height" multiplier="4:3" id="Lkg-Sh-V3D"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="cyG-Nz-B2l"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="oOO-am-7fI"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LiveLens" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bw7-DS-WPY">
+                                <rect key="frame" x="147" y="512" width="99" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="BTD-1j-IR4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="KHi-f9-SbW"/>
+                            <constraint firstItem="BTD-1j-IR4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="L58-pL-66V"/>
+                            <constraint firstItem="BTD-1j-IR4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="om6-rH-361"/>
+                            <constraint firstItem="BTD-1j-IR4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="t9H-RL-ZLb"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="LaunchLogo" width="120" height="120"/>
+    </resources>
+</document>

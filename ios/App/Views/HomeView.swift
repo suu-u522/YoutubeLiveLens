@@ -10,8 +10,18 @@ struct HomeView: View {
                 historyList
                 fab
             }
-            .navigationTitle("YoutubeLiveLens")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    HStack(spacing: 8) {
+                        AppLogoView(size: 28)
+                        Text("LiveLens")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundStyle(.primary)
+                    }
+                }
+            }
             .sheet(isPresented: $vm.showURLSheet) {
                 URLInputSheet(vm: vm)
             }
@@ -319,5 +329,58 @@ struct URLInputSheet: View {
             guard !Task.isCancelled else { return }
             await MainActor.run { previewTitle = title }
         }
+    }
+}
+
+// MARK: - アプリロゴ
+
+struct AppLogoView: View {
+    var size: CGFloat = 34
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: size * 0.2)
+                .fill(
+                    LinearGradient(
+                        colors: [Color.red, Color(red: 0.75, green: 0, blue: 0)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: size, height: size)
+
+            VStack(spacing: size * 0.05) {
+                RoundedPlayShape()
+                    .fill(Color.white)
+                    .frame(width: size * 0.38, height: size * 0.40)
+                    .offset(x: size * 0.03)
+
+                HStack(alignment: .bottom, spacing: size * 0.05) {
+                    ForEach([0.45, 0.75, 1.0, 0.65, 0.55], id: \.self) { ratio in
+                        RoundedRectangle(cornerRadius: 1)
+                            .fill(.white.opacity(0.9))
+                            .frame(width: size * 0.08, height: size * 0.22 * ratio)
+                    }
+                }
+            }
+        }
+        .frame(width: size, height: size)
+    }
+}
+
+struct RoundedPlayShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        let r = min(rect.width, rect.height) * 0.10
+        let topLeft    = CGPoint(x: rect.minX, y: rect.minY)
+        let bottomLeft = CGPoint(x: rect.minX, y: rect.maxY)
+        let right      = CGPoint(x: rect.maxX, y: rect.midY)
+
+        var path = Path()
+        path.move(to: CGPoint(x: rect.minX, y: rect.midY))
+        path.addArc(tangent1End: topLeft,    tangent2End: right,      radius: r)
+        path.addArc(tangent1End: right,      tangent2End: bottomLeft, radius: r)
+        path.addArc(tangent1End: bottomLeft, tangent2End: topLeft,    radius: r)
+        path.closeSubpath()
+        return path
     }
 }
