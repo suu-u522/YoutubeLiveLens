@@ -7,22 +7,39 @@ final class HomeViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var showURLSheet = false
-    @Published var navigationJobId: String?
+    @Published var navigationTarget: NavigationTarget?
+
+    enum NavigationTarget: Identifiable, Hashable {
+        case progress(jobId: String)
+        case result(job: AnalysisJob)
+
+        var id: String {
+            switch self {
+            case .progress(let jobId): return "progress-\(jobId)"
+            case .result(let job): return "result-\(job.id)"
+            }
+        }
+
+        static func == (lhs: NavigationTarget, rhs: NavigationTarget) -> Bool {
+            lhs.id == rhs.id
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+    }
 
     var isNavigating: Bool {
-        get { navigationJobId != nil }
-        set { if !newValue { navigationJobId = nil } }
+        get { navigationTarget != nil }
+        set { if !newValue { navigationTarget = nil } }
     }
 
     let historyStore = HistoryStore.shared
     private let service = FirebaseService.shared
     private let fcm = FCMService.shared
-
-    // jobId → Firestoreリスナー
     private var listeners: [String: ListenerRegistration] = [:]
 
     init() {
-        // 起動時に既存のfetchingジョブを再監視
         for entry in historyStore.entries where entry.status == .fetching {
             startListening(jobId: entry.id)
         }
@@ -59,8 +76,17 @@ final class HomeViewModel: ObservableObject {
     // MARK: - カードタップ
 
     func tapHistory(_ entry: HistoryEntry) {
-        guard entry.status == .done else { return }
-        navigationJobId = entry.id
+        switch entry.status {
+        case .done:
+            // Firestoreから最新のジョブデータを取得してResultViewへ
+            Task {
+                if let job = await fetchJob(jobId: entry.id) {
+                    navigationTarget = .result(job: job)
+                }
+            }
+        case .fetching, .error:
+            navigationTarget = .progress(jobId: entry.id)
+        }
     }
 
     // MARK: - Firestoreリアルタイム監視
@@ -78,7 +104,6 @@ final class HomeViewModel: ObservableObject {
                     status: job.status,
                     totalMessages: job.totalMessages
                 )
-                // 完了 or エラーになったらリスナーを解除
                 if job.status != .fetching {
                     self.listeners[jobId]?.remove()
                     self.listeners[jobId] = nil
@@ -86,6 +111,10 @@ final class HomeViewModel: ObservableObject {
             }
         }
         listeners[jobId] = reg
+    }
+
+    private func fetchJob(jobId: String) async -> AnalysisJob? {
+        try? await service.fetchJob(jobId: jobId)
     }
 
     // MARK: - Helpers

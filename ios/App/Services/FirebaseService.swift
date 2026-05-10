@@ -36,6 +36,17 @@ final class FirebaseService: ObservableObject {
             }
     }
 
+    // MARK: - ジョブ1件取得
+
+    func fetchJob(jobId: String) async throws -> AnalysisJob {
+        let snap = try await db.collection("analysisJobs").document(jobId).getDocument()
+        guard let data = snap.data(),
+              let job = Self.decodeJob(id: jobId, data: data) else {
+            throw ServiceError.notFound
+        }
+        return job
+    }
+
     // MARK: - コメント取得（バケツ単位）
 
     func fetchCommentBucket(jobId: String, bucketIndex: Int) async throws -> CommentBucket {

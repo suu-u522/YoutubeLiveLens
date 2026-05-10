@@ -24,6 +24,7 @@
 		932D754396AFF6F112E12D51 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1BDF4F9010C714C5695875E3 /* GoogleService-Info.plist */; };
 		C462FB2A672459481B4C17F7 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4D731D3299C769F1C55612 /* FirebaseService.swift */; };
 		D0FBF84CF35ACBC540106286 /* CommentBucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4AE69CB3B534A9786B9CDC4 /* CommentBucket.swift */; };
+		D3EFD59E29DA1576F2900D26 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AA0D5D466EADCFD40482FA /* SearchView.swift */; };
 		ED07B22CAFC671A2FF1380A8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 910B535BC8F5247AB21971B0 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		B091D2134E164EE04F971D9E /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B4AE69CB3B534A9786B9CDC4 /* CommentBucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBucket.swift; sourceTree = "<group>"; };
 		B9B197E436D2F000B102263F /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		D9AA0D5D466EADCFD40482FA /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 				0F7051ADE965E56A93136CAB /* AnalysisProgressView.swift */,
 				3A04C042112A5B9EDE4C5370 /* HomeView.swift */,
 				B9B197E436D2F000B102263F /* ResultView.swift */,
+				D9AA0D5D466EADCFD40482FA /* SearchView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 				3760C888D2280E0DA62D4DB7 /* HomeViewModel.swift in Sources */,
 				619622C3D8076F7C8C137D32 /* ResultView.swift in Sources */,
 				060684D286730F3BDBA03E1E /* ResultViewModel.swift in Sources */,
+				D3EFD59E29DA1576F2900D26 /* SearchView.swift in Sources */,
 				180DCFCACF7D7EB7B635308F /* SearchViewModel.swift in Sources */,
 				1EF80138F465FE77AAFEA0F6 /* YoutubeLiveLensApp.swift in Sources */,
 			);

@@ -19,8 +19,13 @@ struct HomeView: View {
                 get: { vm.isNavigating },
                 set: { vm.isNavigating = $0 }
             )) {
-                if let jobId = vm.navigationJobId {
+                switch vm.navigationTarget {
+                case .progress(let jobId):
                     AnalysisProgressView(jobId: jobId)
+                case .result(let job):
+                    ResultView(job: job)
+                case nil:
+                    EmptyView()
                 }
             }
         }
