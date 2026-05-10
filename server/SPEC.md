@@ -56,7 +56,7 @@
 5. 50ページごとにFirestoreへflush・進捗更新
 6. 1分バケツで集計 → timeline / top5 を生成
 7. Firestoreに最終結果を保存（status: done）
-8. FCMプッシュ通知（fcmTokens の全トークンに送信）
+8. FCMプッシュ通知（fcmTokens の全トークンに送信、本文にタイトルは含めない）
 ```
 
 ---
