@@ -191,6 +191,7 @@ struct URLInputSheet: View {
     @ObservedObject var vm: HomeViewModel
     @FocusState private var isFocused: Bool
     @State private var previewTitle: String?
+    @State private var isLiveVideo: Bool?
     @State private var fetchTask: Task<Void, Never>?
 
     private var videoId: String? {
@@ -236,9 +237,9 @@ struct URLInputSheet: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .transition(.opacity.combined(with: .scale(scale: 0.97)))
                     .onChange(of: vid) { newId in
-                        fetchTitle(videoId: newId)
+                        fetchVideoInfo(videoId: newId)
                     }
-                    .onAppear { fetchTitle(videoId: vid) }
+                    .onAppear { fetchVideoInfo(videoId: vid) }
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
@@ -277,13 +278,19 @@ struct URLInputSheet: View {
                     }
                 }
 
-                if let error = vm.errorMessage {
+                if isLiveVideo == false {
+                    Text("終了したライブ配信のアーカイブのみ対応しています")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else if let error = vm.errorMessage {
                     Text(error)
                         .font(.caption)
                         .foregroundStyle(.red)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
+                let isDisabled = vm.urlText.isEmpty || vm.isLoading || isLiveVideo == false
                 Button {
                     Task { await vm.analyzeFromInput() }
                 } label: {
@@ -297,11 +304,11 @@ struct URLInputSheet: View {
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
-                    .background(vm.urlText.isEmpty ? Color(.systemGray4) : Color.red)
+                    .background(isDisabled ? Color(.systemGray4) : Color.red)
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
-                .disabled(vm.urlText.isEmpty || vm.isLoading)
+                .disabled(isDisabled)
 
                 Spacer()
             }
@@ -356,16 +363,28 @@ struct URLInputSheet: View {
         }
     }
 
-    private func fetchTitle(videoId: String) {
+    private func fetchVideoInfo(videoId: String) {
         previewTitle = nil
+        isLiveVideo = nil
         fetchTask?.cancel()
         fetchTask = Task {
-            guard let url = URL(string: "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=\(videoId)&format=json") else { return }
-            guard let (data, _) = try? await URLSession.shared.data(from: url),
-                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                  let title = json["title"] as? String else { return }
+            guard let pageURL = URL(string: "https://www.youtube.com/watch?v=\(videoId)") else { return }
+            guard let (data, _) = try? await URLSession.shared.data(from: pageURL),
+                  let html = String(data: data, encoding: .utf8) else { return }
             guard !Task.isCancelled else { return }
-            await MainActor.run { previewTitle = title }
+
+            let isArchive = html.contains("\"isLiveContent\":true") && !html.contains("\"isLive\":true")
+            let title: String? = {
+                guard let range = html.range(of: "<title>"),
+                      let end = html.range(of: "</title>", range: range.upperBound..<html.endIndex) else { return nil }
+                let raw = String(html[range.upperBound..<end.lowerBound])
+                return raw.hasSuffix(" - YouTube") ? String(raw.dropLast(10)) : raw
+            }()
+
+            await MainActor.run {
+                isLiveVideo = isArchive
+                previewTitle = title
+            }
         }
     }
 }

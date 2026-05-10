@@ -81,11 +81,6 @@ final class HomeViewModel: ObservableObject {
             return
         }
 
-        guard await checkIsLiveVideo(url: trimmed) else {
-            errorMessage = "ライブ配信のアーカイブのみ対応しています"
-            return
-        }
-
         guard canAnalyze else {
             showLimitAlert = true
             return
@@ -96,15 +91,7 @@ final class HomeViewModel: ObservableObject {
         }
     }
 
-    private func checkIsLiveVideo(url: String) async -> Bool {
-        guard let videoId = extractVideoId(url),
-              let pageURL = URL(string: "https://www.youtube.com/watch?v=\(videoId)") else { return false }
-        guard let (data, _) = try? await URLSession.shared.data(from: pageURL),
-              let html = String(data: data, encoding: .utf8) else { return true } // 取得失敗時はサーバーに委ねる
-        return html.contains("\"isLiveContent\":true")
-    }
-
-    // API呼び出しのみ（広告表示と並行して実行）
+// API呼び出しのみ（広告表示と並行して実行）
     func callAnalysisAPI(url: String) async -> (jobId: String, videoId: String)? {
         isLoading = true
         errorMessage = nil

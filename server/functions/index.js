@@ -51,7 +51,8 @@ async function checkIsLiveVideo(videoId) {
   const item = data.items?.[0];
   if (!item) throw new HttpsError("invalid-argument", "動画が見つかりません");
 
-  return !!item.liveStreamingDetails;
+  // liveStreamingDetails が存在 かつ actualEndTime がある = 配信終了済みアーカイブ
+  return !!(item.liveStreamingDetails?.actualEndTime);
 }
 
 async function fetchVideoMetadata(videoId) {
@@ -199,7 +200,7 @@ exports.analyzeChat = onCall(
 
     const isLive = await checkIsLiveVideo(videoId);
     if (!isLive) {
-      throw new HttpsError("invalid-argument", "ライブ配信のアーカイブのみ対応しています");
+      throw new HttpsError("invalid-argument", "終了したライブ配信のアーカイブのみ対応しています");
     }
 
     const videoRef = db.collection("videoAnalysis").doc(videoId);
