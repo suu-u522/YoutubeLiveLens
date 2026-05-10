@@ -120,6 +120,7 @@ struct HistoryCard: View {
         .padding(12)
         .background(Color(.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: .black.opacity(0.08), radius: 6, x: 0, y: 2)
     }
 
     private var thumbnail: some View {
@@ -173,8 +174,8 @@ struct HistoryCard: View {
                 ProgressView()
                     .scaleEffect(0.8)
             case .done:
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.green)
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.secondary)
             case .error:
                 Image(systemName: "exclamationmark.circle.fill")
                     .foregroundStyle(.red)
@@ -203,6 +204,7 @@ struct URLInputSheet: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
+                Spacer().frame(height: 4)
                 // サムネイル＋タイトルプレビュー
                 if let vid = videoId,
                    let thumbURL = URL(string: "https://i.ytimg.com/vi/\(vid)/hqdefault.jpg") {

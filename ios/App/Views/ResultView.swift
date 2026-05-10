@@ -237,7 +237,7 @@ struct Top5Row: View {
     private var rankColor: Color {
         switch rank {
         case 1: return .orange
-        case 2: return Color(.systemGray)
+        case 2: return Color(red: 0.75, green: 0.78, blue: 0.82)
         case 3: return .brown
         default: return .secondary
         }
