@@ -1,4 +1,5 @@
 import Foundation
+import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFunctions
 
@@ -13,6 +14,10 @@ final class FirebaseService: ObservableObject {
     // MARK: - analyzeChat Callable Function の呼び出し
 
     func analyzeChat(url: String, fcmToken: String?) async throws -> String {
+        if Auth.auth().currentUser == nil {
+            try await Auth.auth().signInAnonymously()
+        }
+
         var data: [String: Any] = ["url": url]
         if let token = fcmToken {
             data["fcmToken"] = token

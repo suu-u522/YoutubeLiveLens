@@ -28,18 +28,24 @@
 
 分析中・完了済みの動画を再リクエストした場合も、既存の `jobId` を返す。
 
+### 認証
+
+Firebase Authentication が必須。未認証リクエストは `unauthenticated` エラーを返す。
+iOSクライアントは匿名認証（Anonymous Auth）を使用。
+
 ### 処理フロー
 
 ```
-1. videoId をURLから抽出
-2. YouTube Data API で liveStreamingDetails を確認
+1. 認証チェック（未認証 → HttpsError unauthenticated）
+2. videoId をURLから抽出
+3. YouTube Data API で liveStreamingDetails を確認
    - 存在しない → HttpsError（ライブ以外は分析不可）
-3. videoAnalysis/{videoId} をトランザクションで確認
+4. videoAnalysis/{videoId} をトランザクションで確認
    - fetching → 既存 jobId を返却 + fcmToken を fcmTokens 配列に追加（ファンアウト通知）
    - done    → 既存 jobId を即返却
    - error / 未作成 → 新規ジョブを作成してロック
-4. analysisJobs/{jobId} を作成（fcmTokens 配列を含む）
-5. jobId を即返却 → onJobCreated トリガーが後続処理を担う
+5. analysisJobs/{jobId} を作成（fcmTokens 配列を含む）
+6. jobId を即返却 → onJobCreated トリガーが後続処理を担う
 ```
 
 ---

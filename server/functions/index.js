@@ -187,6 +187,10 @@ function getTop5(timeline) {
 exports.analyzeChat = onCall(
   { timeoutSeconds: 60, memory: "256MiB" },
   async (request) => {
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "認証が必要です");
+    }
+
     const { url, fcmToken } = request.data;
 
     if (!url || typeof url !== "string") {

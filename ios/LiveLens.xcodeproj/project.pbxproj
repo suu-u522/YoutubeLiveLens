@@ -29,6 +29,7 @@
 		838F31B820A0FF1A694DC036 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7762F1070D7C5B8CB598B03 /* HomeView.swift */; };
 		9998CDD5DD277681CF0FF6A0 /* FCMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D09091D8BB20DB8EC36904 /* FCMService.swift */; };
 		B3A42384ACC7F044405A6BE1 /* CommentBucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB92FD7405EB1D90FE1A703E /* CommentBucket.swift */; };
+		C04E13B42FB0CF150000ACCD /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C04E13B32FB0CF150000ACCD /* FirebaseAuth */; };
 		C76A590693E7FE5684C1CA87 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178F4932E291B268403B7916 /* HomeViewModel.swift */; };
 		D7C34D0141D3D3174E01016B /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 9E003683DDF195BBC2B2C3A1 /* GoogleMobileAds */; };
 		E63C44C0F405B0A910878F90 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 3BFDFEA2A23CC70B1319275B /* FirebaseFunctions */; };
@@ -91,6 +92,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B94E96247822B6762C8BE48 /* FirebaseFirestore in Frameworks */,
+				C04E13B42FB0CF150000ACCD /* FirebaseAuth in Frameworks */,
 				50072F07F216DF5D65C68DC1 /* FirebaseMessaging in Frameworks */,
 				E63C44C0F405B0A910878F90 /* FirebaseFunctions in Frameworks */,
 				D7C34D0141D3D3174E01016B /* GoogleMobileAds in Frameworks */,
@@ -155,6 +157,13 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		C04E13B22FB0CF150000ACCD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D750096FD9F3C8997A00AD14 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +199,7 @@
 			children = (
 				8F1729D48CD27B83E27BD4B1 /* App */,
 				5A188D22C789A1DEF7D67A5D /* ShareExtension */,
+				C04E13B22FB0CF150000ACCD /* Frameworks */,
 				57BBE2DCBFE52B7AFFA1213E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -235,6 +245,7 @@
 				43CD9CAF6A7C4F4E2EEA4051 /* FirebaseMessaging */,
 				3BFDFEA2A23CC70B1319275B /* FirebaseFunctions */,
 				9E003683DDF195BBC2B2C3A1 /* GoogleMobileAds */,
+				C04E13B32FB0CF150000ACCD /* FirebaseAuth */,
 			);
 			productName = LiveLens;
 			productReference = CE2990C9D70DA3621A280FF6 /* LiveLens.app */;
@@ -248,8 +259,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = 4E0586CA14CEC5198B5B1537 /* Build configuration list for PBXProject "LiveLens" */;
 			developmentRegion = en;
@@ -607,6 +616,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6AB18D66E4B82892E27AF1C1 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
 			productName = GoogleMobileAds;
+		};
+		C04E13B32FB0CF150000ACCD /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DA535B3B16F467AFD3E59208 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 		C5A15A232E97FB794F4DBC9A /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
