@@ -345,13 +345,10 @@ struct URLInputSheet: View {
 
         let url = vm.urlText.trimmingCharacters(in: .whitespaces)
 
-        // 広告表示と並行してAPI呼び出し開始
-        let apiTask = Task { await vm.callAnalysisAPI(url: url) }
-
         adService.show(from: vc) {
-            // 報酬獲得後にAPI結果を待って履歴保存
+            // 広告完了後にAPI呼び出し開始
             Task { @MainActor in
-                if let result = await apiTask.value {
+                if let result = await vm.callAnalysisAPI(url: url) {
                     vm.grantRewardedAnalysis()
                     vm.commitToHistory(jobId: result.jobId, url: url, videoId: result.videoId)
                 }
