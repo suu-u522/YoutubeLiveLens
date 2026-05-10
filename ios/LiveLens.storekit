@@ -1,0 +1,25 @@
+{
+  "identifier" : "LiveLens",
+  "nonConsumableProducts" : [
+    {
+      "displayPrice" : "980",
+      "familyShareable" : false,
+      "internalID" : "com.livelens.app.unlimited",
+      "localizations" : [
+        {
+          "description" : "分析本数の制限を解除して、無制限に分析できます。",
+          "displayName" : "LiveLens 無制限プラン",
+          "locale" : "ja_JP"
+        }
+      ],
+      "productID" : "com.livelens.app.unlimited",
+      "referenceName" : "Unlimited",
+      "type" : "NonConsumable"
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0,
+    "patch" : 0
+  }
+}

@@ -317,8 +317,30 @@ struct URLInputSheet: View {
                 }
             }
             .onAppear { isFocused = true }
+            .confirmationDialog("無料の分析回数を使い切りました", isPresented: $vm.showLimitAlert, titleVisibility: .visible) {
+                Button("広告を見て続ける") {
+                    showAd()
+                }
+                Button("980円で無制限に解放する") {
+                    vm.showPaywall = true
+                }
+                Button("キャンセル", role: .cancel) {}
+            } message: {
+                Text("広告視聴で1回、または買い切りで無制限に使えます")
+            }
+            .sheet(isPresented: $vm.showPaywall) {
+                PaywallView()
+            }
         }
         .presentationDetents([.medium])
+    }
+
+    private func showAd() {
+        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let vc = scene.windows.first?.rootViewController else { return }
+        RewardedAdService.shared.show(from: vc) {
+            PurchaseService.shared.grantRewardedAnalysis()
+        }
     }
 
     private func fetchTitle(videoId: String) {

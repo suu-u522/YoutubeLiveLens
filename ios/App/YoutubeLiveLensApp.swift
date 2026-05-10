@@ -3,6 +3,7 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseFunctions
 import FirebaseMessaging
+import GoogleMobileAds
 
 @main
 struct YoutubeLiveLensApp: App {
@@ -31,6 +32,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         Functions.functions(region: "us-central1").useEmulator(withHost: "127.0.0.1", port: 5001)
         #endif
 
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
         FCMService.shared.setup()
         Task { await FCMService.shared.requestPermission() }
         return true

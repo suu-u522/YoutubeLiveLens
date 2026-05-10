@@ -10,6 +10,9 @@ packages:
   FirebaseFirestore:
     url: https://github.com/firebase/firebase-ios-sdk
     from: "10.0.0"
+  GoogleMobileAds:
+    url: https://github.com/googleads/swift-package-manager-google-mobile-ads
+    from: "11.0.0"
 
 targets:
   YoutubeLiveLens:
@@ -29,6 +32,7 @@ targets:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         NSCameraUsageDescription: ""
+        GADApplicationIdentifier: ca-app-pub-3940256099942544~1458002511
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.livelens.app
       SWIFT_VERSION: "5.9"
@@ -41,6 +45,8 @@ targets:
         product: FirebaseMessaging
       - package: FirebaseFirestore
         product: FirebaseFunctions
+      - package: GoogleMobileAds
+        product: GoogleMobileAds
     preBuildScripts:
       - name: Firebase GoogleService-Info Check
         script: |

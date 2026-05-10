@@ -7,6 +7,8 @@ final class HomeViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var showURLSheet = false
+    @Published var showPaywall = false
+    @Published var showLimitAlert = false
     @Published var navigationTarget: NavigationTarget?
 
     enum NavigationTarget: Identifiable, Hashable {
@@ -55,6 +57,12 @@ final class HomeViewModel: ObservableObject {
             return
         }
 
+        guard PurchaseService.shared.canAnalyze else {
+            showLimitAlert = true
+            return
+        }
+
+        PurchaseService.shared.consumeRewardedIfNeeded()
         isLoading = true
         errorMessage = nil
 
