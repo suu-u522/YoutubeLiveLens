@@ -62,23 +62,34 @@ final class HomeViewModel: ObservableObject {
             return
         }
 
-        PurchaseService.shared.consumeRewardedIfNeeded()
+        if let result = await callAnalysisAPI(url: trimmed) {
+            commitToHistory(jobId: result.jobId, url: trimmed, videoId: result.videoId)
+        }
+    }
+
+    // API呼び出しのみ（広告・課金フローで広告表示と並行して実行）
+    func callAnalysisAPI(url: String) async -> (jobId: String, videoId: String)? {
         isLoading = true
         errorMessage = nil
-
+        defer { isLoading = false }
         do {
-            let jobId = try await service.analyzeChat(url: trimmed, fcmToken: fcm.fcmToken)
-            let placeholder = AnalysisJob(id: jobId, videoId: extractVideoId(trimmed) ?? "", url: trimmed)
-            historyStore.add(job: placeholder)
-            startListening(jobId: jobId)
-
-            showURLSheet = false
-            urlText = ""
+            let jobId = try await service.analyzeChat(url: url, fcmToken: fcm.fcmToken)
+            return (jobId, extractVideoId(url) ?? "")
         } catch {
             errorMessage = error.localizedDescription
+            return nil
         }
+    }
 
-        isLoading = false
+    // 履歴保存・リスナー開始（広告報酬獲得後 or 課金完了後に呼ぶ）
+    func commitToHistory(jobId: String, url: String, videoId: String) {
+        PurchaseService.shared.consumeRewardedIfNeeded()
+        let placeholder = AnalysisJob(id: jobId, videoId: videoId, url: url)
+        historyStore.add(job: placeholder)
+        startListening(jobId: jobId)
+        showURLSheet = false
+        showPaywall = false
+        urlText = ""
     }
 
     // MARK: - カードタップ

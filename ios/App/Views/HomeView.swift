@@ -306,7 +306,7 @@ struct URLInputSheet: View {
                 Spacer()
             }
             .padding(20)
-            .navigationTitle("新しい分析")
+            .navigationTitle("新たに分析する")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -329,7 +329,9 @@ struct URLInputSheet: View {
                 Text("広告視聴で1回、または買い切りで無制限に使えます")
             }
             .sheet(isPresented: $vm.showPaywall) {
-                PaywallView()
+                PaywallView(url: vm.urlText) { jobId, videoId in
+                    vm.commitToHistory(jobId: jobId, url: vm.urlText, videoId: videoId)
+                }
             }
         }
         .presentationDetents([.medium])
@@ -338,8 +340,20 @@ struct URLInputSheet: View {
     private func showAd() {
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let vc = scene.windows.first?.rootViewController else { return }
+
+        let url = vm.urlText.trimmingCharacters(in: .whitespaces)
+
+        // 広告表示と並行してAPI呼び出し開始
+        let apiTask = Task { await vm.callAnalysisAPI(url: url) }
+
         RewardedAdService.shared.show(from: vc) {
-            PurchaseService.shared.grantRewardedAnalysis()
+            // 報酬獲得後にAPI結果を待って履歴保存
+            Task { @MainActor in
+                if let result = await apiTask.value {
+                    PurchaseService.shared.grantRewardedAnalysis()
+                    vm.commitToHistory(jobId: result.jobId, url: url, videoId: result.videoId)
+                }
+            }
         }
     }
 

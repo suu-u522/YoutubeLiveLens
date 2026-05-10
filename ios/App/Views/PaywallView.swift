@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct PaywallView: View {
+    let url: String
+    let onPurchased: (String, String) -> Void  // (jobId, videoId)
+
     @StateObject private var purchase = PurchaseService.shared
     @Environment(\.dismiss) private var dismiss
     @State private var errorMessage: String?
@@ -96,7 +99,17 @@ struct PaywallView: View {
         errorMessage = nil
         do {
             try await purchase.purchase()
-            if purchase.isPurchased { dismiss() }
+            if purchase.isPurchased {
+                // 購入完了後に分析API呼び出し
+                let service = FirebaseService.shared
+                let fcmToken = FCMService.shared.fcmToken
+                if let jobId = try? await service.analyzeChat(url: url, fcmToken: fcmToken) {
+                    let videoId = url.components(separatedBy: "v=").dropFirst().first?
+                        .components(separatedBy: "&").first ?? ""
+                    onPurchased(jobId, videoId)
+                }
+                dismiss()
+            }
         } catch {
             errorMessage = error.localizedDescription
         }
