@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Node.js
+node_modules/
+
+# Firebase
+.env
+.env.*
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+functions/.cache/
