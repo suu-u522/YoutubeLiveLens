@@ -64,6 +64,7 @@ final class HomeViewModel: ObservableObject {
     private let service = FirebaseService.shared
     private let fcm = FCMService.shared
     private var listeners: [String: ListenerRegistration] = [:]
+    private var jobCache: [String: AnalysisJob] = [:]
 
     init() {
         for entry in historyStore.entries where entry.status == .fetching {
@@ -162,9 +163,12 @@ final class HomeViewModel: ObservableObject {
                     thumbnailUrl: job.thumbnailUrl,
                     publishDate: job.publishDate,
                     status: job.status,
-                    totalMessages: job.totalMessages
+                    totalMessages: job.totalMessages,
+                    progress: job.progress,
+                    errorMessage: job.errorMessage
                 )
                 if job.status != .fetching {
+                    if job.status == .done { self.jobCache[jobId] = job }
                     self.listeners[jobId]?.remove()
                     self.listeners[jobId] = nil
                 }
@@ -173,8 +177,11 @@ final class HomeViewModel: ObservableObject {
         listeners[jobId] = reg
     }
 
-    private func fetchJob(jobId: String) async -> AnalysisJob? {
-        try? await service.fetchJob(jobId: jobId)
+    func fetchJob(jobId: String) async -> AnalysisJob? {
+        if let cached = jobCache[jobId] { return cached }
+        let job = try? await service.fetchJob(jobId: jobId)
+        if let job { jobCache[jobId] = job }
+        return job
     }
 
     // MARK: - Helpers

@@ -9,4 +9,6 @@ struct HistoryEntry: Identifiable, Codable {
     let createdAt: Date
     var status: JobStatus
     var totalMessages: Int
+    var progress: Int?
+    var errorMessage: String?
 }

@@ -29,13 +29,15 @@ final class HistoryStore: ObservableObject {
         save()
     }
 
-    func update(jobId: String, title: String?, thumbnailUrl: String?, publishDate: String?, status: JobStatus, totalMessages: Int) {
+    func update(jobId: String, title: String?, thumbnailUrl: String?, publishDate: String?, status: JobStatus, totalMessages: Int, progress: Int? = nil, errorMessage: String? = nil) {
         guard let idx = entries.firstIndex(where: { $0.id == jobId }) else { return }
         entries[idx].title = title ?? entries[idx].title
         entries[idx].thumbnailUrl = thumbnailUrl ?? entries[idx].thumbnailUrl
         entries[idx].publishDate = publishDate ?? entries[idx].publishDate
         entries[idx].status = status
         entries[idx].totalMessages = totalMessages
+        if let progress { entries[idx].progress = progress }
+        if let errorMessage { entries[idx].errorMessage = errorMessage }
         save()
     }
 

@@ -2,33 +2,28 @@ import SwiftUI
 
 struct AnalysisProgressView: View {
     let jobId: String
-    @StateObject private var vm: AnalysisViewModel
+    @ObservedObject private var historyStore = HistoryStore.shared
+    @EnvironmentObject private var homeVM: HomeViewModel
     @State private var navigateToResult = false
+    @State private var resultJob: AnalysisJob?
 
-    init(jobId: String) {
-        self.jobId = jobId
-        _vm = StateObject(wrappedValue: AnalysisViewModel(jobId: jobId))
+    private var entry: HistoryEntry? {
+        historyStore.entries.first { $0.id == jobId }
     }
 
     var body: some View {
         Group {
-            if let job = vm.job {
-                content(job: job)
-                    .onChange(of: job.status) { status in
+            if let entry {
+                content(entry: entry)
+                    .onChange(of: entry.status) { status in
                         if status == .done {
-                            // Firestoreの書き込みが全て完了するよう少し待ってから遷移
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                navigateToResult = true
+                            Task {
+                                resultJob = await homeVM.fetchJob(jobId: jobId)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    navigateToResult = true
+                                }
                             }
                         }
-                        HistoryStore.shared.update(
-                            jobId: job.id,
-                            title: job.title,
-                            thumbnailUrl: job.thumbnailUrl,
-                            publishDate: job.publishDate,
-                            status: status,
-                            totalMessages: job.totalMessages
-                        )
                     }
             } else {
                 loadingPlaceholder
@@ -36,9 +31,9 @@ struct AnalysisProgressView: View {
         }
         .navigationTitle("分析中")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(vm.job?.status == .fetching)
+        .navigationBarBackButtonHidden(entry?.status == .fetching)
         .navigationDestination(isPresented: $navigateToResult) {
-            if let job = vm.job {
+            if let job = resultJob {
                 ResultView(job: job)
             }
         }
@@ -46,25 +41,23 @@ struct AnalysisProgressView: View {
 
     // MARK: - メインコンテンツ
 
-    private func content(job: AnalysisJob) -> some View {
+    private func content(entry: HistoryEntry) -> some View {
         VStack(spacing: 0) {
-            // サムネイル
-            thumbnail(job: job)
+            thumbnail(entry: entry)
 
             VStack(spacing: 32) {
-                // タイトル
-                Text(job.title ?? "タイトル取得中...")
+                Text(entry.title ?? "タイトル取得中...")
                     .font(.headline)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 24)
 
-                switch job.status {
+                switch entry.status {
                 case .fetching:
-                    fetchingView(job: job)
+                    fetchingView(entry: entry)
                 case .done:
                     doneView
                 case .error:
-                    errorView(message: job.errorMessage)
+                    errorView(message: entry.errorMessage)
                 }
             }
             .padding(.top, 32)
@@ -75,7 +68,7 @@ struct AnalysisProgressView: View {
 
     // MARK: - 取得中
 
-    private func fetchingView(job: AnalysisJob) -> some View {
+    private func fetchingView(entry: HistoryEntry) -> some View {
         VStack(spacing: 20) {
             ProgressView()
                 .progressViewStyle(.linear)
@@ -88,8 +81,8 @@ struct AnalysisProgressView: View {
                     .foregroundStyle(.secondary)
 
                 HStack(spacing: 16) {
-                    Label("\(job.totalMessages.formatted()) 件", systemImage: "bubble.left.and.bubble.right")
-                    Label("\(job.progress) ページ", systemImage: "doc.text")
+                    Label("\(entry.totalMessages.formatted()) 件", systemImage: "bubble.left.and.bubble.right")
+                    Label("\(entry.progress ?? 0) ページ", systemImage: "doc.text")
                 }
                 .font(.caption)
                 .foregroundStyle(.tertiary)
@@ -130,8 +123,8 @@ struct AnalysisProgressView: View {
 
     // MARK: - サムネイル
 
-    private func thumbnail(job: AnalysisJob) -> some View {
-        AsyncImage(url: job.thumbnailUrl.flatMap(URL.init)) { phase in
+    private func thumbnail(entry: HistoryEntry) -> some View {
+        AsyncImage(url: entry.thumbnailUrl.flatMap(URL.init)) { phase in
             switch phase {
             case .success(let image):
                 image

@@ -45,6 +45,7 @@ struct HomeView: View {
                 switch vm.navigationTarget {
                 case .progress(let jobId):
                     AnalysisProgressView(jobId: jobId)
+                        .environmentObject(vm)
                 case .result(let job):
                     ResultView(job: job)
                 case nil:
