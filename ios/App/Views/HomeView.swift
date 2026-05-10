@@ -14,13 +14,12 @@ struct HomeView: View {
             .sheet(isPresented: $vm.showURLSheet) {
                 URLInputSheet(vm: vm)
             }
-            .navigationDestination(item: $vm.navigateTo) { target in
-                switch target {
-                case .progress(let jobId):
+            .navigationDestination(isPresented: Binding(
+                get: { vm.isNavigating },
+                set: { vm.isNavigating = $0 }
+            )) {
+                if let jobId = vm.navigationJobId {
                     AnalysisProgressView(jobId: jobId)
-                case .result(let job):
-                    // TODO: ResultView実装後に差し替え
-                    Text("Result: \(job.id)")
                 }
             }
         }

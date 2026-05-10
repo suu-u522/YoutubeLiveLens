@@ -6,22 +6,10 @@ final class HomeViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var showURLSheet = false
-    @Published var navigateTo: NavigationTarget?
-
-    enum NavigationTarget: Identifiable, Equatable {
-        case progress(jobId: String)
-        case result(job: AnalysisJob)
-
-        var id: String {
-            switch self {
-            case .progress(let jobId): return "progress-\(jobId)"
-            case .result(let job): return "result-\(job.id)"
-            }
-        }
-
-        static func == (lhs: NavigationTarget, rhs: NavigationTarget) -> Bool {
-            lhs.id == rhs.id
-        }
+    @Published var navigationJobId: String?
+    var isNavigating: Bool {
+        get { navigationJobId != nil }
+        set { if !newValue { navigationJobId = nil } }
     }
 
     let historyStore = HistoryStore.shared
@@ -49,7 +37,7 @@ final class HomeViewModel: ObservableObject {
 
             showURLSheet = false
             urlText = ""
-            navigateTo = .progress(jobId: jobId)
+            navigationJobId = jobId
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -63,11 +51,11 @@ final class HomeViewModel: ObservableObject {
         switch entry.status {
         case .done:
             // タイトル等が揃っていれば結果画面へ（AnalysisJobを復元）
-            navigateTo = .progress(jobId: entry.id)
+            navigationJobId = entry.id
         case .fetching:
-            navigateTo = .progress(jobId: entry.id)
+            navigationJobId = entry.id
         case .error:
-            navigateTo = .progress(jobId: entry.id)
+            navigationJobId = entry.id
         }
     }
 

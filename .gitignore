@@ -11,3 +11,12 @@ firebase-debug.log
 firestore-debug.log
 ui-debug.log
 functions/.cache/
+GoogleService-Info.plist
+
+# Xcode
+xcuserdata/
+*.xccheckout
+*.moved-aside
+DerivedData/
+*.hmap
+*.ipa
