@@ -18,7 +18,7 @@
 | フィールド | 型 | 必須 | 説明 |
 |---|---|---|---|
 | `url` | string | ✅ | YouTube動画URL（`?v=` 形式） |
-| `fcmToken` | string | - | 完了通知先のFCMデバイストークン |
+| `fcmToken` | string | - | 完了通知先のFCMデバイストークン（複数ユーザーが同一動画をリクエストした場合も全員に通知） |
 
 ### レスポンス
 
@@ -33,9 +33,10 @@
 ```
 1. videoId をURLから抽出
 2. videoAnalysis/{videoId} をトランザクションで確認
-   - fetching / done → 既存 jobId を即返却（重複実行防止）
-   - error / 未作成  → 新規ジョブを作成してロック
-3. analysisJobs/{jobId} を作成（fcmToken を含む）
+   - fetching → 既存 jobId を返却 + fcmToken を fcmTokens 配列に追加（ファンアウト通知）
+   - done    → 既存 jobId を即返却
+   - error / 未作成 → 新規ジョブを作成してロック
+3. analysisJobs/{jobId} を作成（fcmTokens 配列を含む）
 4. jobId を即返却 → onJobCreated トリガーが後続処理を担う
 ```
 
@@ -55,7 +56,7 @@
 5. 50ページごとにFirestoreへflush・進捗更新
 6. 1分バケツで集計 → timeline / top5 を生成
 7. Firestoreに最終結果を保存（status: done）
-8. FCMプッシュ通知（fcmToken があれば）
+8. FCMプッシュ通知（fcmTokens の全トークンに送信）
 ```
 
 ---
@@ -80,7 +81,7 @@
 |---|---|---|
 | `videoId` | string | YouTube動画ID |
 | `url` | string | 元のリクエストURL |
-| `fcmToken` | string | FCMデバイストークン（nullの場合あり） |
+| `fcmTokens` | array | FCMデバイストークンの配列（複数ユーザーが同一動画をリクエストした場合に蓄積） |
 | `title` | string | 動画タイトル（onJobCreated で更新） |
 | `thumbnailUrl` | string | サムネイルURL（`hqdefault.jpg`、videoIdから生成） |
 | `publishDate` | string | 配信日（ISO 8601形式、例: `2024-01-15`） |

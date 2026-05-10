@@ -189,15 +189,21 @@ exports.analyzeChat = onCall(
       const snap = await tx.get(videoRef);
       if (snap.exists) {
         const { status, jobId: existingId } = snap.data();
-        if (status === "fetching" || status === "done") return existingId;
+        if (status === "fetching") {
+          if (fcmToken) {
+            const existingJobRef = db.collection("analysisJobs").doc(existingId);
+            tx.update(existingJobRef, { fcmTokens: FieldValue.arrayUnion(fcmToken) });
+          }
+          return existingId;
+        }
+        if (status === "done") return existingId;
       }
       jobRef = db.collection("analysisJobs").doc();
       tx.set(videoRef, { jobId: jobRef.id, status: "fetching" });
-      // fcmToken もジョブに保存しておき、onJobCreated で使う
       tx.set(jobRef, {
         videoId,
         url,
-        fcmToken: fcmToken ?? null,
+        fcmTokens: fcmToken ? [fcmToken] : [],
         status: "fetching",
         progress: 0,
         totalMessages: 0,
@@ -222,7 +228,7 @@ exports.onJobCreated = onDocumentCreated(
     const data = event.data?.data();
     if (!data) return;
 
-    const { videoId, fcmToken } = data;
+    const { videoId, fcmTokens = [] } = data;
     const jobRef = db.collection("analysisJobs").doc(jobId);
     const videoRef = db.collection("videoAnalysis").doc(videoId);
 
@@ -276,16 +282,21 @@ exports.onJobCreated = onDocumentCreated(
         videoRef.update({ status: "done", completedAt }),
       ]);
 
-      // FCMプッシュ通知
-      if (fcmToken && typeof fcmToken === "string") {
-        await getMessaging().send({
-          token: fcmToken,
+      // FCMプッシュ通知（全購読者に送信）
+      const validTokens = fcmTokens.filter((t) => typeof t === "string" && t.length > 0);
+      if (validTokens.length > 0) {
+        const message = {
           notification: {
             title: "分析完了！",
             body: `${title ?? "動画"}の分析が完了しました`,
           },
           data: { jobId },
-        });
+        };
+        if (validTokens.length === 1) {
+          await getMessaging().send({ ...message, token: validTokens[0] });
+        } else {
+          await getMessaging().sendEachForMulticast({ ...message, tokens: validTokens });
+        }
       }
     } catch (err) {
       await Promise.all([
