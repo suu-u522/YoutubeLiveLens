@@ -37,6 +37,11 @@ struct Top5Scene: Identifiable, Codable {
     }
 }
 
+enum VideoPlatform: String, Codable {
+    case youtube
+    case twitch
+}
+
 enum JobStatus: String, Codable {
     case fetching
     case done
@@ -45,6 +50,7 @@ enum JobStatus: String, Codable {
 
 struct AnalysisJob: Identifiable, Codable {
     let id: String
+    let platform: VideoPlatform?
     let videoId: String
     let url: String
     var title: String?
@@ -60,6 +66,7 @@ struct AnalysisJob: Identifiable, Codable {
 
     init(
         id: String,
+        platform: VideoPlatform? = nil,
         videoId: String,
         url: String,
         status: JobStatus = .fetching,
@@ -67,6 +74,7 @@ struct AnalysisJob: Identifiable, Codable {
         totalMessages: Int = 0
     ) {
         self.id = id
+        self.platform = platform
         self.videoId = videoId
         self.url = url
         self.status = status

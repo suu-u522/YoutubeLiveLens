@@ -86,6 +86,7 @@ final class FirebaseService: ObservableObject {
 
         var job = AnalysisJob(
             id: id,
+            platform: (data["platform"] as? String).flatMap(VideoPlatform.init),
             videoId: videoId,
             url: url,
             status: status,

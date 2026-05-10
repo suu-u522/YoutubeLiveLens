@@ -207,7 +207,8 @@ exports.analyzeChat = onCall(
       throw new HttpsError("invalid-argument", "終了したライブ配信のアーカイブのみ対応しています");
     }
 
-    const videoRef = db.collection("videoAnalysis").doc(videoId);
+    const platform = "youtube";
+    const videoRef = db.collection("videoAnalysis").doc(`${platform}_${videoId}`);
     let jobRef;
 
     const existingJobId = await db.runTransaction(async (tx) => {
@@ -226,6 +227,7 @@ exports.analyzeChat = onCall(
       jobRef = db.collection("analysisJobs").doc();
       tx.set(videoRef, { jobId: jobRef.id, status: "fetching" });
       tx.set(jobRef, {
+        platform,
         videoId,
         url,
         fcmTokens: fcmToken ? [fcmToken] : [],

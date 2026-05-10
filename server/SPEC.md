@@ -71,9 +71,9 @@ iOSクライアントは匿名認証（Anonymous Auth）を使用。
 
 ## Firestoreスキーマ
 
-### videoAnalysis/{videoId}
+### videoAnalysis/{platform}_{videoId}
 
-同一動画の重複分析を防ぐロック兼インデックス。
+同一動画の重複分析を防ぐロック兼インデックス。キーは `youtube_xxx` のようにプラットフォームプレフィックスを付与する。
 
 | フィールド | 型 | 説明 |
 |---|---|---|
@@ -87,7 +87,8 @@ iOSクライアントは匿名認証（Anonymous Auth）を使用。
 
 | フィールド | 型 | 説明 |
 |---|---|---|
-| `videoId` | string | YouTube動画ID |
+| `platform` | string | 動画プラットフォーム（現在は `youtube` のみ） |
+| `videoId` | string | 動画ID（プラットフォーム固有） |
 | `url` | string | 元のリクエストURL |
 | `fcmTokens` | array | FCMデバイストークンの配列（複数ユーザーが同一動画をリクエストした場合に蓄積） |
 | `title` | string | 動画タイトル（onJobCreated で更新） |
