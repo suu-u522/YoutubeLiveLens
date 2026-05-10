@@ -143,9 +143,9 @@ https://www.youtube.com/watch?v=IrbY2vcec64
 ## リポジトリ構成
 
 ```
-GitHub（どちらもPrivate）
-　├ YoutubeLiveLens-ios   → Xcodeプロジェクト（.gitignore: Swift）
-　└ YoutubeLiveLens-server → Firebase Functions（.gitignore: Node）
+YoutubeLiveLens（Private）
+　├ ios/    → Xcodeプロジェクト（.gitignore: Swift）
+　└ server/ → Firebase Functions（.gitignore: Node）
 ```
 
 ---

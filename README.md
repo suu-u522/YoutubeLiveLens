@@ -66,7 +66,7 @@ YouTube Data API v3はアーカイブに非対応のため、YouTubeの内部API
 ## リポジトリ構成
 
 ```
-GitHub（どちらもPrivate）
-　├ YoutubeLiveLens-ios    → Xcodeプロジェクト
-　└ YoutubeLiveLens-server → Firebase Functions
+YoutubeLiveLens（Private）
+　├ ios/    → Xcodeプロジェクト（Swift / SwiftUI）
+　└ server/ → Firebase Functions（Node.js）
 ```
