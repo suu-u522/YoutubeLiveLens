@@ -1,0 +1,49 @@
+name: YoutubeLiveLens
+options:
+  bundleIdPrefix: com.youtubelivelens
+  deploymentTarget:
+    iOS: "16.0"
+  defaultConfig: Debug
+  xcodeVersion: "15"
+
+packages:
+  FirebaseFirestore:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: "10.0.0"
+
+targets:
+  YoutubeLiveLens:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: App
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: YoutubeLiveLens
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        LSRequiresIPhoneOS: true
+        UILaunchScreen:
+          UIColorName: ""
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSCameraUsageDescription: ""
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.youtubelivelens.app
+      SWIFT_VERSION: "5.9"
+      TARGETED_DEVICE_FAMILY: "1"
+    dependencies:
+      - package: FirebaseFirestore
+        product: FirebaseFirestore
+      - package: FirebaseFirestore
+        product: FirebaseMessaging
+      - package: FirebaseFirestore
+        product: FirebaseFunctions
+    preBuildScripts:
+      - name: Firebase GoogleService-Info Check
+        script: |
+          if [ ! -f "${SRCROOT}/App/GoogleService-Info.plist" ]; then
+            echo "warning: GoogleService-Info.plist が見つかりません。Firebase Consoleからダウンロードして追加してください。"
+          fi
