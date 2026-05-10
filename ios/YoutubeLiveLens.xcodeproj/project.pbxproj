@@ -56,6 +56,7 @@
 		B091D2134E164EE04F971D9E /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B4AE69CB3B534A9786B9CDC4 /* CommentBucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBucket.swift; sourceTree = "<group>"; };
 		B9B197E436D2F000B102263F /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		C04E13B12FB088170000ACCD /* LiveLens.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = LiveLens.storekit; sourceTree = "<group>"; };
 		D9AA0D5D466EADCFD40482FA /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		E20CD3114535EAC155C31864 /* PurchaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,6 +91,7 @@
 		2E60DC33C339D93B9F943945 = {
 			isa = PBXGroup;
 			children = (
+				C04E13B12FB088170000ACCD /* LiveLens.storekit */,
 				CC20375B17C9367E90D50EE3 /* App */,
 				FEA72AFFE780657E059C6DA8 /* Products */,
 			);
@@ -187,8 +189,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = 7462B08036B7508F280302DD /* Build configuration list for PBXProject "YoutubeLiveLens" */;
 			developmentRegion = en;
