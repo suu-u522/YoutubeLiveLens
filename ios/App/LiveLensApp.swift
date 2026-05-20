@@ -28,19 +28,20 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
         Auth.auth().signInAnonymously { _, _ in }
 
-        #if DEBUG
+        #if targetEnvironment(simulator)
         let settings = FirestoreSettings()
         settings.host = "127.0.0.1:8080"
         settings.isSSLEnabled = false
         settings.cacheSettings = MemoryCacheSettings()
         Firestore.firestore().settings = settings
         Functions.functions(region: "us-central1").useEmulator(withHost: "127.0.0.1", port: 5001)
-        #endif
+        #endif // targetEnvironment(simulator)
 
         GADMobileAds.sharedInstance().start { _ in
             Task { await RewardedAdService.shared.load() }
         }
         FCMService.shared.setup()
+        UIApplication.shared.registerForRemoteNotifications()
         Task { await FCMService.shared.requestPermission() }
         return true
     }
