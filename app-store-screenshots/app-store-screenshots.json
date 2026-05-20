@@ -1,0 +1,212 @@
+{
+  "appName": "LiveLens",
+  "themeId": "clean-light",
+  "locales": [
+    "en"
+  ],
+  "locale": "en",
+  "device": "iphone",
+  "orientation": "portrait",
+  "appIcon": "/app-icon.png",
+  "slidesByDevice": {
+    "iphone": [
+      {
+        "id": "s_mpe7n1dc_0",
+        "layout": "hero",
+        "label": {
+          "en": "ライブチャット分析"
+        },
+        "headline": {
+          "en": "盛り上がりを\n見逃さない"
+        },
+        "screenshot": "/screenshots/uploaded/8be543a665a2e0ba.png"
+      },
+      {
+        "id": "s_mpe7n1dc_1",
+        "layout": "device-bottom",
+        "label": {
+          "en": "URL入力"
+        },
+        "headline": {
+          "en": "URLを貼るだけで\nすぐ分析"
+        },
+        "screenshot": "/screenshots/uploaded/4e83e9e6c45b5574.png"
+      },
+      {
+        "id": "s_mpe7n1dc_2",
+        "layout": "device-top",
+        "label": {
+          "en": "分析結果"
+        },
+        "headline": {
+          "en": "神回の瞬間が\n一目でわかる"
+        },
+        "screenshot": "/screenshots/uploaded/4e96e430029b774e.png",
+        "inverted": true,
+        "transforms": {
+          "device": {
+            "x": 153.18224783861672,
+            "y": -286.79999999999995,
+            "width": 1013.6355043227666,
+            "height": 2064.96,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "s_mpe7n1dc_3",
+        "layout": "device-bottom",
+        "label": {
+          "en": "コメント検索"
+        },
+        "headline": {
+          "en": "コメントを\nキーワードで探す"
+        },
+        "screenshot": "/screenshots/uploaded/c8f82dc93e7e68b1.png"
+      }
+    ],
+    "android": [
+      {
+        "id": "s_mpe7n1dc_4",
+        "layout": "hero",
+        "label": {
+          "en": "ライブチャット分析"
+        },
+        "headline": {
+          "en": "盛り上がりを\n見逃さない"
+        },
+        "screenshot": "/screenshots/apple/iphone/en/01.png"
+      },
+      {
+        "id": "s_mpe7n1dc_5",
+        "layout": "device-bottom",
+        "label": {
+          "en": "URL入力"
+        },
+        "headline": {
+          "en": "URLを貼るだけで\nすぐ分析"
+        },
+        "screenshot": "/screenshots/apple/iphone/en/02.png"
+      },
+      {
+        "id": "s_mpe7n1dc_6",
+        "layout": "device-top",
+        "label": {
+          "en": "分析結果"
+        },
+        "headline": {
+          "en": "神回の瞬間が\n一目でわかる"
+        },
+        "screenshot": "/screenshots/apple/iphone/en/03.png",
+        "inverted": true
+      },
+      {
+        "id": "s_mpe7n1dc_7",
+        "layout": "device-bottom",
+        "label": {
+          "en": "コメント検索"
+        },
+        "headline": {
+          "en": "コメントを\nキーワードで探す"
+        },
+        "screenshot": "/screenshots/apple/iphone/en/04.png"
+      }
+    ],
+    "ipad": [
+      {
+        "id": "s_mpe7n1dc_8",
+        "layout": "hero",
+        "label": {
+          "en": "MEET YOUR APP"
+        },
+        "headline": {
+          "en": "Made for\nthe big screen."
+        },
+        "screenshot": ""
+      },
+      {
+        "id": "s_mpe7n1dc_9",
+        "layout": "device-bottom",
+        "label": {
+          "en": "FEATURE 01"
+        },
+        "headline": {
+          "en": "Built for\nfocus."
+        },
+        "screenshot": ""
+      },
+      {
+        "id": "s_mpe7n1dc_a",
+        "layout": "device-top",
+        "label": {
+          "en": "FEATURE 02"
+        },
+        "headline": {
+          "en": "Always within reach."
+        },
+        "screenshot": "",
+        "inverted": true
+      }
+    ],
+    "android-7": [
+      {
+        "id": "s_mpe7n1dc_b",
+        "layout": "hero",
+        "label": {
+          "en": "MEET YOUR APP"
+        },
+        "headline": {
+          "en": "Pocket-sized\npower."
+        },
+        "screenshot": ""
+      },
+      {
+        "id": "s_mpe7n1dc_c",
+        "layout": "split-landscape",
+        "label": {
+          "en": "FEATURE 01"
+        },
+        "headline": {
+          "en": "Wide canvas,\nbigger ideas."
+        },
+        "screenshot": ""
+      }
+    ],
+    "android-10": [
+      {
+        "id": "s_mpe7n1dc_d",
+        "layout": "hero",
+        "label": {
+          "en": "MEET YOUR APP"
+        },
+        "headline": {
+          "en": "Made for\nthe big screen."
+        },
+        "screenshot": ""
+      },
+      {
+        "id": "s_mpe7n1dc_e",
+        "layout": "split-landscape",
+        "label": {
+          "en": "FEATURE 01"
+        },
+        "headline": {
+          "en": "Wide canvas,\nbigger ideas."
+        },
+        "screenshot": ""
+      }
+    ],
+    "feature-graphic": [
+      {
+        "id": "s_mpe7n1dc_f",
+        "layout": "feature-graphic",
+        "label": {},
+        "headline": {
+          "en": "Your tagline goes here."
+        },
+        "screenshot": ""
+      }
+    ]
+  }
+}
