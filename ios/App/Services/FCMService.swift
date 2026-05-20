@@ -5,7 +5,7 @@ import UserNotifications
 final class FCMService: NSObject, ObservableObject, MessagingDelegate, UNUserNotificationCenterDelegate {
     static let shared = FCMService()
 
-    @Published var fcmToken: String?
+    @Published var fcmToken: String? = UserDefaults.standard.string(forKey: "fcmToken")
 
     private override init() {
         super.init()
@@ -25,6 +25,7 @@ final class FCMService: NSObject, ObservableObject, MessagingDelegate, UNUserNot
 
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         self.fcmToken = fcmToken
+        UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
         #if DEBUG
         print("FCM token:", fcmToken ?? "nil")
         #endif
