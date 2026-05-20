@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6C4E60743A21E1BEB6B8434A"
-               BuildableName = "LiveLens.app"
+               BuildableName = "ChatPeak.app"
                BlueprintName = "LiveLens"
                ReferencedContainer = "container:LiveLens.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6C4E60743A21E1BEB6B8434A"
-            BuildableName = "LiveLens.app"
+            BuildableName = "ChatPeak.app"
             BlueprintName = "LiveLens"
             ReferencedContainer = "container:LiveLens.xcodeproj">
          </BuildableReference>
@@ -68,7 +68,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6C4E60743A21E1BEB6B8434A"
-            BuildableName = "LiveLens.app"
+            BuildableName = "ChatPeak.app"
             BlueprintName = "LiveLens"
             ReferencedContainer = "container:LiveLens.xcodeproj">
          </BuildableReference>
@@ -85,7 +85,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6C4E60743A21E1BEB6B8434A"
-            BuildableName = "LiveLens.app"
+            BuildableName = "ChatPeak.app"
             BlueprintName = "LiveLens"
             ReferencedContainer = "container:LiveLens.xcodeproj">
          </BuildableReference>

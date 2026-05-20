@@ -43,7 +43,7 @@ final class ShareViewController: UIViewController {
 
     private func openMainApp(with youtubeURL: String) {
         guard let encoded = youtubeURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let appURL = URL(string: "livelens://analyze?url=\(encoded)") else {
+              let appURL = URL(string: "chatpeak://analyze?url=\(encoded)") else {
             finish()
             return
         }

@@ -78,7 +78,7 @@ final class HomeViewModel: ObservableObject {
     // MARK: - 外部URLからの起動
 
     func handleIncomingURL(_ url: URL) {
-        guard url.scheme == "livelens",
+        guard url.scheme == "chatpeak",
               url.host == "analyze",
               let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
               let youtubeURL = components.queryItems?.first(where: { $0.name == "url" })?.value else { return }

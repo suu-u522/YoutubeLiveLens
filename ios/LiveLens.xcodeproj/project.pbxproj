@@ -77,7 +77,7 @@
 		BE2229CA651537A74686F475 /* HistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStore.swift; sourceTree = "<group>"; };
 		C04E13B52FBE1EB60000ACCD /* LiveLensRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LiveLensRelease.entitlements; sourceTree = "<group>"; };
 		C4C875BCDF75BC080AEEE100 /* HistoryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntry.swift; sourceTree = "<group>"; };
-		CE2990C9D70DA3621A280FF6 /* LiveLens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveLens.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE2990C9D70DA3621A280FF6 /* ChatPeak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatPeak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF65B53382C85B5EEE9996AD /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		D2891CC24194936B167E4712 /* AnalysisJob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisJob.swift; sourceTree = "<group>"; };
 		D3036E037850245685A64584 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -126,7 +126,7 @@
 		57BBE2DCBFE52B7AFFA1213E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CE2990C9D70DA3621A280FF6 /* LiveLens.app */,
+				CE2990C9D70DA3621A280FF6 /* ChatPeak.app */,
 				85C266C57E876648095ABD43 /* LiveLensShare.appex */,
 			);
 			name = Products;
@@ -250,7 +250,7 @@
 				C04E13B32FB0CF150000ACCD /* FirebaseAuth */,
 			);
 			productName = LiveLens;
-			productReference = CE2990C9D70DA3621A280FF6 /* LiveLens.app */;
+			productReference = CE2990C9D70DA3621A280FF6 /* ChatPeak.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -373,7 +373,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 378873669P;
 				INFOPLIST_FILE = App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LiveLens;
+				INFOPLIST_KEY_CFBundleDisplayName = ChatPeak;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -381,7 +381,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.livelens.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chatpeak.app;
+				PRODUCT_NAME = ChatPeak;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -403,7 +404,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 378873669P;
 				INFOPLIST_FILE = App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LiveLens;
+				INFOPLIST_KEY_CFBundleDisplayName = ChatPeak;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -411,7 +412,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.livelens.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chatpeak.app;
+				PRODUCT_NAME = ChatPeak;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -485,7 +487,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 378873669P;
 				INFOPLIST_FILE = ShareExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LiveLens;
+				INFOPLIST_KEY_CFBundleDisplayName = ChatPeak;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -493,7 +495,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.livelens.app.share;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chatpeak.app.share;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -573,7 +575,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 378873669P;
 				INFOPLIST_FILE = ShareExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LiveLens;
+				INFOPLIST_KEY_CFBundleDisplayName = ChatPeak;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -581,7 +583,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.livelens.app.share;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chatpeak.app.share;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

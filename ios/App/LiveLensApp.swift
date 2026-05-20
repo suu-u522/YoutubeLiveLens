@@ -7,7 +7,7 @@ import FirebaseMessaging
 import GoogleMobileAds
 
 @main
-struct LiveLensApp: App {
+struct ChatPeakApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {

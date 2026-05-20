@@ -17,7 +17,7 @@ struct HomeView: View {
                 ToolbarItem(placement: .principal) {
                     HStack(spacing: 8) {
                         AppLogoView(size: 28)
-                        Text("LiveLens")
+                        Text("ChatPeak")
                             .font(.system(size: 17, weight: .semibold))
                             .foregroundStyle(.primary)
                     }
@@ -416,7 +416,7 @@ struct LicensesView: View {
             List {
                 Section("このアプリについて") {
                     LabeledContent("バージョン", value: "1.0")
-                    LabeledContent("コピーライト", value: "© 2026 LiveLens")
+                    LabeledContent("コピーライト", value: "© 2026 ChatPeak")
                 }
                 Section("リンク") {
                     Link(destination: URL(string: "https://radial-khaan-e73.notion.site/LiveLens-35cc432b82af80938561fbb43e26cbd9")!) {
