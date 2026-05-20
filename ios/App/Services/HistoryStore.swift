@@ -52,6 +52,43 @@ final class HistoryStore: ObservableObject {
         entries = decoded
     }
 
+    #if DEBUG
+    func loadDummyEntries() {
+        entries = [
+            HistoryEntry(
+                id: "dummy1",
+                videoId: "dummy1",
+                title: "【8時間耐久】年末大感謝祭ライブ2024 ～みんなありがとう！～",
+                thumbnailUrl: nil,
+                publishDate: "2024-12-31",
+                createdAt: Date().addingTimeInterval(-3600),
+                status: .done,
+                totalMessages: 142830
+            ),
+            HistoryEntry(
+                id: "dummy2",
+                videoId: "dummy2",
+                title: "【ドラクエ3リメイク】初見プレイ！勇者と仲間たちと世界を救う旅へ【後編】",
+                thumbnailUrl: nil,
+                publishDate: "2024-11-15",
+                createdAt: Date().addingTimeInterval(-86400),
+                status: .done,
+                totalMessages: 87654
+            ),
+            HistoryEntry(
+                id: "dummy3",
+                videoId: "dummy3",
+                title: "【スト6】シーズン2新キャラ解禁！ランクマ深夜まで潜ります",
+                thumbnailUrl: nil,
+                publishDate: "2024-10-03",
+                createdAt: Date().addingTimeInterval(-172800),
+                status: .done,
+                totalMessages: 53201
+            ),
+        ]
+    }
+    #endif
+
     private func save() {
         guard let data = try? encoder.encode(entries) else { return }
         UserDefaults.standard.set(data, forKey: key)

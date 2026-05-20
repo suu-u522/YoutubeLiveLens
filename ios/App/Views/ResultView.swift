@@ -27,6 +27,9 @@ struct ResultView: View {
         .navigationDestination(isPresented: $showSearch) {
             SearchView(jobId: job.id, videoId: job.videoId)
         }
+        #if DEBUG
+        .onAppear { showSearch = true }
+        #endif
     }
 
     // MARK: - サムネイル

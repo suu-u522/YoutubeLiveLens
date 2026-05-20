@@ -29,6 +29,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         Auth.auth().signInAnonymously { _, _ in }
 
         #if DEBUG
+        HistoryStore.shared.loadDummyEntries()
+
         let settings = FirestoreSettings()
         settings.host = "127.0.0.1:8080"
         settings.isSSLEnabled = false

@@ -207,8 +207,13 @@ struct HistoryCard: View {
 struct URLInputSheet: View {
     @ObservedObject var vm: HomeViewModel
     @FocusState private var isFocused: Bool
+    #if DEBUG
+    @State private var previewTitle: String? = "【8時間耐久】年末大感謝祭ライブ2024 ～みんなありがとう！～"
+    @State private var isLiveVideo: Bool? = true
+    #else
     @State private var previewTitle: String?
     @State private var isLiveVideo: Bool?
+    #endif
     @State private var fetchTask: Task<Void, Never>?
 
     private var videoId: String? {
@@ -228,14 +233,26 @@ struct URLInputSheet: View {
                 if let vid = videoId,
                    let thumbURL = URL(string: "https://i.ytimg.com/vi/\(vid)/hqdefault.jpg") {
                     ZStack(alignment: .bottomLeading) {
-                        AsyncImage(url: thumbURL) { phase in
-                            switch phase {
-                            case .success(let image):
-                                image.resizable().scaledToFill()
-                            default:
-                                Rectangle().foregroundStyle(Color(.systemGray5))
-                                    .overlay { ProgressView() }
+                        Group {
+                            #if DEBUG
+                            Rectangle()
+                                .foregroundStyle(Color(.systemGray5))
+                                .overlay {
+                                    Image(systemName: "play.rectangle.fill")
+                                        .font(.system(size: 40))
+                                        .foregroundStyle(.secondary)
+                                }
+                            #else
+                            AsyncImage(url: thumbURL) { phase in
+                                switch phase {
+                                case .success(let image):
+                                    image.resizable().scaledToFill()
+                                default:
+                                    Rectangle().foregroundStyle(Color(.systemGray5))
+                                        .overlay { ProgressView() }
+                                }
                             }
+                            #endif
                         }
                         .frame(maxWidth: .infinity)
                         .frame(height: 180)

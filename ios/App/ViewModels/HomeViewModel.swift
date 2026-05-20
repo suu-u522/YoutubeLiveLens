@@ -65,6 +65,9 @@ final class HomeViewModel: ObservableObject {
         for entry in historyStore.entries where entry.status == .fetching {
             startListening(jobId: entry.id)
         }
+        #if DEBUG
+        navigationTarget = .result(job: Self.dummyJob)
+        #endif
         NotificationCenter.default.addObserver(
             forName: .incomingAnalysisURL,
             object: nil,
@@ -180,6 +183,36 @@ final class HomeViewModel: ObservableObject {
     }
 
     // MARK: - Helpers
+
+    #if DEBUG
+    static let dummyJob: AnalysisJob = {
+        let counts = [12, 18, 25, 30, 22, 45, 60, 88, 120, 95, 74, 55, 62, 78, 110, 145, 200, 180, 135, 98, 76, 54, 42, 38, 50, 65, 80, 110, 95, 72]
+        let timeline = counts.enumerated().map { i, count in
+            TimelineBucket(bucketIndex: i, startMs: i * 60000, endMs: (i + 1) * 60000, count: count)
+        }
+        let top5 = [
+            Top5Scene(startMs: 960000,  endMs: 1020000, count: 200),
+            Top5Scene(startMs: 900000,  endMs:  960000, count: 180),
+            Top5Scene(startMs: 840000,  endMs:  900000, count: 145),
+            Top5Scene(startMs: 780000,  endMs:  840000, count: 135),
+            Top5Scene(startMs: 1020000, endMs: 1080000, count: 120),
+        ]
+        var job = AnalysisJob(
+            id: "dummyResult",
+            platform: .youtube,
+            videoId: "dummyResult",
+            url: "https://www.youtube.com/watch?v=dummyResult",
+            status: .done,
+            totalMessages: 54321
+        )
+        job.title = "【8時間耐久】年末大感謝祭ライブ2024 ～みんなありがとう！～"
+        job.publishDate = "2024-12-31"
+        job.lengthSeconds = 28800
+        job.timeline = timeline
+        job.top5 = top5
+        return job
+    }()
+    #endif
 
     private func extractVideoId(_ url: String) -> String? {
         guard let vRange = url.range(of: "v=") else { return nil }
