@@ -58,7 +58,7 @@ final class HistoryStore: ObservableObject {
             HistoryEntry(
                 id: "dummy1",
                 videoId: "dummy1",
-                title: "【8時間耐久】年末大感謝祭ライブ2024 ～みんなありがとう！～",
+                title: "【年末大感謝祭】2024 総決算ライブ ～ありがとう10万人！～",
                 thumbnailUrl: nil,
                 publishDate: "2024-12-31",
                 createdAt: Date().addingTimeInterval(-3600),

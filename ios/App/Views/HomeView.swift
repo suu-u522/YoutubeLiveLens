@@ -208,7 +208,7 @@ struct URLInputSheet: View {
     @ObservedObject var vm: HomeViewModel
     @FocusState private var isFocused: Bool
     #if DEBUG
-    @State private var previewTitle: String? = "【8時間耐久】年末大感謝祭ライブ2024 ～みんなありがとう！～"
+    @State private var previewTitle: String? = "【年末大感謝祭】2024 総決算ライブ ～ありがとう10万人！～"
     @State private var isLiveVideo: Bool? = true
     #else
     @State private var previewTitle: String?
@@ -398,6 +398,9 @@ struct URLInputSheet: View {
     }
 
     private func fetchVideoInfo(videoId: String) {
+        #if DEBUG
+        return
+        #endif
         previewTitle = nil
         isLiveVideo = nil
         fetchTask?.cancel()

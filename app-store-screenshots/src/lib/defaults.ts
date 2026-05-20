@@ -99,7 +99,7 @@ function fgStarter(): Slide[] {
 }
 
 export const DEFAULT_PROJECT: ProjectState = {
-  appName: "LiveLens",
+  appName: "ChatPeak",
   themeId: "clean-light",
   locales: [DEFAULT_LOCALE],
   locale: DEFAULT_LOCALE,

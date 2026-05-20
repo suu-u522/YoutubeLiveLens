@@ -205,7 +205,7 @@ final class HomeViewModel: ObservableObject {
             status: .done,
             totalMessages: 54321
         )
-        job.title = "【8時間耐久】年末大感謝祭ライブ2024 ～みんなありがとう！～"
+        job.title = "【年末大感謝祭】2024 総決算ライブ ～ありがとう10万人！～"
         job.publishDate = "2024-12-31"
         job.lengthSeconds = 28800
         job.timeline = timeline
