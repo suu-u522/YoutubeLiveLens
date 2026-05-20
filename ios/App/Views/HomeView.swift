@@ -96,7 +96,7 @@ struct HomeView: View {
             Text("分析した動画がここに表示されます")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
-            Text("右下の ＋ ボタンでYouTube URLを入力")
+            Text("右下の ＋ ボタンで配信アーカイブURLを入力")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -259,7 +259,7 @@ struct URLInputSheet: View {
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("YouTube 動画URL")
+                    Text("配信アーカイブURL")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
 
