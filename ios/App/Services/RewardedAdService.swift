@@ -9,7 +9,7 @@ final class RewardedAdService: NSObject, ObservableObject {
     #if DEBUG
     private let adUnitID = "ca-app-pub-3940256099942544/1712485313"
     #else
-    private let adUnitID = "ca-app-pub-2494717257898446/6096861446"
+    private let adUnitID = "ca-app-pub-2494717257898446/2143249507"
     #endif
 
     @Published private(set) var isAdReady = false
