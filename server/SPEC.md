@@ -5,7 +5,7 @@
 | 関数名 | 種別 | タイムアウト | メモリ |
 |---|---|---|---|
 | `analyzeChat` | Callable (HTTPS) | 60秒 | 256MiB |
-| `onJobCreated` | Firestore onCreate トリガー | 1800秒 | 256MiB（maxInstances: 5） |
+| `onJobCreated` | Firestore onCreate トリガー | 540秒 | 256MiB（maxInstances: 5） |
 
 ---
 
@@ -40,12 +40,14 @@ iOSクライアントは匿名認証（Anonymous Auth）を使用。
 2. videoId をURLから抽出
 3. YouTube Data API で liveStreamingDetails を確認
    - 存在しない → HttpsError（ライブ以外は分析不可）
-4. videoAnalysis/{videoId} をトランザクションで確認
+4. YouTubeページHTMLから continuationトークンを取得
+   - 取得できない → HttpsError（チャットリプレイなし）
+5. videoAnalysis/{videoId} をトランザクションで確認
    - fetching → 既存 jobId を返却 + fcmToken を fcmTokens 配列に追加（ファンアウト通知）
    - done    → 既存 jobId を即返却
    - error / 未作成 → 新規ジョブを作成してロック
-5. analysisJobs/{jobId} を作成（fcmTokens 配列を含む）
-6. jobId を即返却 → onJobCreated トリガーが後続処理を担う
+6. analysisJobs/{jobId} を作成（fcmTokens 配列を含む）
+7. jobId を即返却 → onJobCreated トリガーが後続処理を担う
 ```
 
 ---

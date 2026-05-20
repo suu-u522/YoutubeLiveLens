@@ -185,7 +185,7 @@ function getTop5(timeline) {
 // ============================================================
 
 exports.analyzeChat = onCall(
-  { timeoutSeconds: 60, memory: "256MiB" },
+  { timeoutSeconds: 60, memory: "256MiB", invoker: "public" },
   async (request) => {
     if (!request.auth) {
       throw new HttpsError("unauthenticated", "認証が必要です");
@@ -205,6 +205,12 @@ exports.analyzeChat = onCall(
     const isLive = await checkIsLiveVideo(videoId);
     if (!isLive) {
       throw new HttpsError("invalid-argument", "終了したライブ配信のアーカイブのみ対応しています");
+    }
+
+    try {
+      await fetchContinuationToken(videoId);
+    } catch {
+      throw new HttpsError("invalid-argument", "この動画にはチャットリプレイがありません");
     }
 
     const platform = "youtube";
