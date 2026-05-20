@@ -156,7 +156,8 @@ struct HistoryCard: View {
                 EmptyView()
             }
         }
-        .frame(width: 100, height: 56)
+        .frame(width: 100 * 60.0 / 56.25, height: 60)
+        .clipped()
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
